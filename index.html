@@ -131,10 +131,17 @@
                     })
                 });
                 const data = await response.json();
-                const aiReply = data.candidates?.[0]?.content?.parts?.[0]?.text || "Sem resposta da IA.";
-                addMessage(aiReply, 'bot');
+                
+                if (data.candidates && data.candidates.length > 0 && data.candidates[0].content) {
+                    const aiReply = data.candidates[0].content.parts[0].text;
+                    addMessage(aiReply, 'bot');
+                } else if (data.error) {
+                    addMessage(`Erro da API: ${data.error.message}`, 'bot');
+                } else {
+                    addMessage("Recebi uma resposta vazia ou inválida da IA.", 'bot');
+                }
             } catch (error) {
-                addMessage("Desculpe, ocorreu um erro ao conectar com o Gemini.", 'bot');
+                addMessage("Desculpe, ocorreu um erro de conexão com o Gemini.", 'bot');
             }
         }
 
@@ -150,4 +157,3 @@
     </script>
 </body>
 </html>
-
