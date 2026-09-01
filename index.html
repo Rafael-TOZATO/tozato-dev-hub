@@ -117,6 +117,71 @@
   .cta:hover {
     background: #55c8ee;
   }
+  .chat-container {
+    margin-top: 44px;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--bg-panel);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: 320px;
+  }
+  .chat-header {
+    padding: 12px 16px;
+    background: var(--line);
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+  .chat-messages {
+    flex: 1;
+    padding: 16px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 0.9rem;
+  }
+  .message {
+    padding: 8px 12px;
+    border-radius: 6px;
+    max-width: 80%;
+    line-height: 1.4;
+  }
+  .message.bot {
+    background: var(--line);
+    color: var(--text);
+    align-self: flex-start;
+  }
+  .message.user {
+    background: var(--accent);
+    color: #04141c;
+    align-self: flex-end;
+  }
+  .chat-input-area {
+    display: flex;
+    border-top: 1px solid var(--line);
+  }
+  .chat-input-area input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    padding: 12px;
+    color: var(--text);
+    font-size: 0.9rem;
+    outline: none;
+  }
+  .chat-input-area button {
+    background: var(--accent);
+    color: #04141c;
+    border: none;
+    padding: 0 16px;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .chat-input-area button:hover {
+    background: #55c8ee;
+  }
   footer {
     margin-top: 64px;
     color: var(--text-dim);
@@ -164,7 +229,62 @@
 
   <a class="cta" href="https://github.com/apps/tozatocode-ai" target="_blank" rel="noopener">Instalar no GitHub</a>
 
+  <div class="chat-container">
+    <div class="chat-header">TozatoCode-AI Chat (Assistente Virtual)</div>
+    <div class="chat-messages" id="chatMessages">
+      <div class="message bot">Olá! Sou o assistente do TozatoCode-AI. Como posso ajudar você hoje com os repositórios ou contatos do Rafael?</div>
+    </div>
+    <form class="chat-input-area" id="chatForm">
+      <input type="text" id="chatInput" placeholder="Digite sua dúvida..." autocomplete="off">
+      <button type="submit">Enviar</button>
+    </form>
+  </div>
+
   <footer>TozatoCode-AI © 2026 — Rafael Ornelas Tozato</footer>
 </main>
+
+<script>
+  const chatMessages = document.getElementById('chatMessages');
+  const chatForm = document.getElementById('chatForm');
+  const chatInput = document.getElementById('chatInput');
+
+  chatForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const text = chatInput.value.trim();
+    if (!text) return;
+
+    appendMessage(text, 'user');
+    chatInput.value = '';
+
+    setTimeout(() => {
+      const reply = getBotResponse(text);
+      appendMessage(reply, 'bot');
+    }, 600);
+  });
+
+  function appendMessage(text, sender) {
+    const msg = document.createElement('div');
+    msg.classList.add('message', sender);
+    msg.textContent = text;
+    chatMessages.appendChild(msg);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
+
+  function getBotResponse(input) {
+    const query = input.toLowerCase();
+    if (query.includes('github') || query.includes('repositório')) {
+      return 'Você pode acessar todos os repositórios diretamente no GitHub do Rafael: github.com/Rafael-TOZATO';
+    } else if (query.includes('linkedin') || query.includes('contato')) {
+      return 'O perfil profissional e conexões estão disponíveis no LinkedIn: linkedin.com/in/rafaeltozato81';
+    } else if (query.includes('medium') || query.includes('artigo')) {
+      return 'Você pode conferir os artigos técnicos no Medium: medium.com/@rafael-tozato';
+    } else if (query.includes('dio')) {
+      return 'O perfil na plataforma Digital Innovation One (DIO) é: dio.me/users/rafael_tozato';
+    } else {
+      return 'Interessante! Para parcerias ou dúvidas específicas, entre em contato através do LinkedIn ou verifique os links listados na página.';
+    }
+  }
+</script>
+
 </body>
 </html>
