@@ -1,25 +1,22 @@
-# TozatoCode-AI — Landing Page
+# TozatoCode-AI Hub
 
-Página oficial de apresentação do GitHub App **TozatoCode-AI**, criada para controlar o card de pré-visualização (Open Graph) exibido ao compartilhar o link em redes sociais e aplicativos de mensagem.
+Aplicação web interativa desenvolvida para centralizar o portfólio profissional, listagem dinâmica de repositórios via GitHub API e assistente conversacional integrado.
 
-## Motivação
+## Funcionalidades
+- Exibição em tempo real de dados do perfil do GitHub.
+- Listagem e filtragem de repositórios públicos.
+- Seção consolidada de links profissionais e canais de contato.
+- Interface de chat interativa para suporte e navegação guiada.
 
-A página de listagem padrão do GitHub (`github.com/apps/tozatocode-ai`) não permite personalizar título, descrição ou imagem de pré-visualização — esses campos são controlados pelo GitHub e exibem sempre o octocat genérico. Esta landing page resolve isso: hospedada via GitHub Pages, com meta tags Open Graph e Twitter Card configuradas manualmente.
+## Tecnologias Utilizadas
+- HTML5, CSS3 / Tailwind CSS
+- JavaScript (ES6+) / TypeScript
+- GitHub REST API
+- GitHub Pages
 
-## Estrutura
+## Contato e Redes Profissionais
 
-| Arquivo | Função |
-|---|---|
-| `index.html` | Página única com meta tags OG/Twitter e conteúdo de apresentação do App |
-| `banner.jpg` | Imagem de pré-visualização (1200x800), referenciada em `og:image` |
-
-## Deploy
-
-Publicada via GitHub Pages, branch `main`, pasta raiz.
-
-URL: `https://Rafael-TOZATO.github.io/tozatocode-ai-site/`
-
-## Autor
-
-Rafael Ornelas Tozato
-[github.com/Rafael-TOZATO](https://github.com/Rafael-TOZATO) · [linkedin.com/in/rafaeltozato81](https://www.linkedin.com/in/rafaeltozato81)
+- **GitHub:** [Rafael-TOZATO](https://github.com/Rafael-TOZATO)
+- **LinkedIn:** [Rafael Ornelas Tozato](https://linkedin.com/in/rafaeltozato81)
+- **Medium:** [Artigos e Publicações](https://medium.com/@rafael-tozato)
+- **DIO:** [Perfil Digital Innovation One](https://www.dio.me/users/rafael_tozato)
