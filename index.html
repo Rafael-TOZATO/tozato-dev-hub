@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TozatoCode-AI | App & Hub</title>
+    <title>Tozato Dev Hub | App & Hub</title>
     
-    <meta property="og:title" content="TozatoCode-AI | App & Hub">
+    <meta property="og:title" content="Tozato Dev Hub | App & Hub">
     <meta property="og:description" content="Aplicativo interativo e hub profissional criado por Rafael Ornelas Tozato.">
-    <meta property="og:image" content="https://rafael-tozato.github.io/tozatocode-ai-app/banner.jpg">
-    <meta property="og:url" content="https://rafael-tozato.github.io/tozatocode-ai-app/">
+    <meta property="og:image" content="https://rafael-tozato.github.io/tozato-dev-hub/banner.jpg">
+    <meta property="og:url" content="https://rafael-tozato.github.io/tozato-dev-hub/">
     <meta property="og:type" content="website">
 
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="TozatoCode-AI | App & Hub">
+    <meta name="twitter:title" content="Tozato Dev Hub | App & Hub">
     <meta name="twitter:description" content="Aplicativo interativo e hub profissional criado por Rafael Ornelas Tozato.">
-    <meta name="twitter:image" content="https://rafael-tozato.github.io/tozatocode-ai-app/banner.jpg">
+    <meta name="twitter:image" content="https://rafael-tozato.github.io/tozato-dev-hub/banner.jpg">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -34,10 +34,10 @@
             </div>
             
             <div class="w-full rounded-2xl overflow-hidden border border-slate-800 shadow-xl bg-slate-900 mb-4">
-                <img src="banner.jpg" alt="TozatoCode-AI Banner" class="w-full h-auto object-cover block">
+                <img src="banner.jpg" alt="Tozato Dev Hub Banner" class="w-full h-auto object-cover block">
             </div>
 
-            <h1 class="font-bold text-xl leading-tight">TozatoCode-AI</h1>
+            <h1 class="font-bold text-xl leading-tight">Tozato Dev Hub</h1>
             <p class="text-xs text-slate-400 mt-0.5">Rafael Ornelas Tozato | App & Hub</p>
             
             <div class="flex items-center justify-center gap-3 mt-4 text-sm">
@@ -60,7 +60,7 @@
             <div class="flex items-start space-x-2.5">
                 <div class="w-7 h-7 rounded-lg bg-cyan-500/20 text-cyan-400 flex items-center justify-center flex-shrink-0 font-bold text-xs">AI</div>
                 <div class="bg-slate-800/90 border border-slate-700/50 rounded-2xl p-3.5 max-w-[85%] text-slate-200 text-xs leading-relaxed">
-                    Olá, Rafael! Aplicativo estruturado com o banner, links profissionais e metatags de compartilhamento. Digite <code class="text-cyan-300 bg-slate-950 px-1 py-0.5 rounded">repos</code> para ver seus projetos ou envie uma mensagem.
+                    Olá, Rafael! Digite <code class="text-cyan-300 bg-slate-950 px-1 py-0.5 rounded">repos</code> para ver seus projetos ou envie uma mensagem para conversar com a IA.
                 </div>
             </div>
         </div>
@@ -83,8 +83,16 @@
         const chatForm = document.getElementById('chat-form');
         const userInput = document.getElementById('user-input');
         
-        // Substitua abaixo o texto entre aspas pela chave gerada no Google AI Studio (TozatoCode-AI-Key)
-        const GEMINI_API_KEY = "SUA_CHAVE_AQUI";
+        function getApiKey() {
+            let key = localStorage.getItem('gemini_api_key');
+            if (!key) {
+                key = prompt("Insira sua chave da API do Gemini para ativar o chat:");
+                if (key) {
+                    localStorage.setItem('gemini_api_key', key.trim());
+                }
+            }
+            return key || "";
+        }
 
         function addMessage(text, sender) {
             const isUser = sender === 'user';
@@ -140,7 +148,13 @@
                     addMessage("Ocorreu um erro ao conectar com a API do GitHub.", "bot");
                 }
             } else {
-                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+                const apiKey = getApiKey();
+                if (!apiKey) {
+                    addMessage("Chave de API não informada. O chat precisa de uma chave válida para responder.", "bot");
+                    return;
+                }
+
+                const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
                 
                 try {
                     const response = await fetch(url, {
