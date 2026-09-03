@@ -1,0 +1,15 @@
+{
+  "name": "Tozato Dev Hub",
+  "short_name": "Tozato Hub",
+  "start_url": "/tozato-dev-hub/",
+  "display": "standalone",
+  "background_color": "#090d16",
+  "theme_color": "#090d16",
+  "icons": [
+    {
+      "src": "banner.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}
