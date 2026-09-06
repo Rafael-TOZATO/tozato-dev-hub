@@ -17,6 +17,16 @@ Aplicação web interativa desenvolvida para centralizar o portfólio profission
 - Vercel (hospedagem e função serverless em `api/chat.js`)
 - Google Gemini API
 
+## Testes
+
+O projeto possui testes unitários para a função serverless de chat (`api/chat.js`), cobrindo os principais fluxos: método inválido, ausência de chave de API, resposta bem-sucedida, erro retornado pela API e falha de rede.
+
+Para rodar os testes localmente:
+```bash
+npm install
+npm test
+```
+
 ## Contato e Redes Profissionais
 
 - **GitHub:** [Rafael-TOZATO](https://github.com/Rafael-TOZATO)
