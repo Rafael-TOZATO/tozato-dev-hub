@@ -1,5 +1,7 @@
 # TozatoCode-AI Hub
 
+![Branch Protection](https://img.shields.io/badge/branch%20protection-active-success)
+
 Aplicação web interativa desenvolvida para centralizar o portfólio profissional, listagem dinâmica de repositórios via GitHub API e assistente conversacional integrado.
 
 **Aplicação ao vivo:** [tozato-dev-hub.vercel.app](https://tozato-dev-hub.vercel.app)
