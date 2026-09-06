@@ -83,4 +83,48 @@ describe('api/chat handler', () => {
     expect(res.status).toHaveBeenCalledWith(500);
     expect(res.json).toHaveBeenCalledWith({ error: 'Falha de conexao' });
   });
+
+  test('retorna 400 quando a mensagem esta ausente ou vazia', async () => {
+    process.env.GEMINI_API_KEY = 'chave-de-teste';
+    const req = { method: 'POST', body: { message: '' } };
+    const res = mockRes();
+
+    await handler(req, res);
+
+    expect(res.status).toHaveBeenCalledWith(400);
+    expect(res.json).toHaveBeenCalledWith({ error: 'Mensagem inválida ou vazia.' });
+  });
+
+  test('retorna 500 quando a resposta da IA vem sem candidates (bloqueio de seguranca)', async () => {
+    process.env.GEMINI_API_KEY = 'chave-de-teste';
+    const req = { method: 'POST', body: { message: 'ola' } };
+    const res = mockRes();
+
+    global.fetch = jest.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ promptFeedback: { blockReason: 'SAFETY' } })
+    });
+
+    await handler(req, res);
+
+    expect(res.status).toHaveBeenCalledWith(500);
+    expect(res.json).toHaveBeenCalledWith({ error: 'Resposta da IA vazia ou bloqueada pelo filtro de segurança.' });
+  });
+
+  test('retorna 504 quando a chamada excede o tempo limite', async () => {
+    process.env.GEMINI_API_KEY = 'chave-de-teste';
+    const req = { method: 'POST', body: { message: 'ola' } };
+    const res = mockRes();
+
+    global.fetch = jest.fn().mockImplementation(() => {
+      const err = new Error('The operation was aborted');
+      err.name = 'AbortError';
+      return Promise.reject(err);
+    });
+
+    await handler(req, res);
+
+    expect(res.status).toHaveBeenCalledWith(504);
+    expect(res.json).toHaveBeenCalledWith({ error: 'Tempo limite excedido ao consultar a API.' });
+  });
 });
