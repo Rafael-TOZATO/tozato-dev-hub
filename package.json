@@ -2,6 +2,7 @@
   "name": "tozato-dev-hub",
   "version": "1.0.0",
   "description": "Aplicacao web interativa que centraliza o portfolio profissional, listagem dinamica de repositorios via GitHub API e assistente conversacional integrado.",
+  "type": "commonjs",
   "scripts": {
     "test": "jest"
   },
