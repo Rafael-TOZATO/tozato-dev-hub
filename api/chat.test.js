@@ -4,6 +4,8 @@ function mockRes() {
   const res = {};
   res.status = jest.fn().mockReturnValue(res);
   res.json = jest.fn().mockReturnValue(res);
+  res.setHeader = jest.fn().mockReturnValue(res);
+  res.end = jest.fn().mockReturnValue(res);
   return res;
 }
 
@@ -15,6 +17,27 @@ describe('api/chat handler', () => {
     jest.restoreAllMocks();
   });
 
+  test('responde a preflight OPTIONS com 204 e aplica CORS para origem permitida', async () => {
+    const req = { method: 'OPTIONS', headers: { origin: 'https://rafael-tozato.github.io' } };
+    const res = mockRes();
+
+    await handler(req, res);
+
+    expect(res.setHeader).toHaveBeenCalledWith('Access-Control-Allow-Origin', 'https://rafael-tozato.github.io');
+    expect(res.status).toHaveBeenCalledWith(204);
+    expect(res.end).toHaveBeenCalled();
+  });
+
+  test('nao aplica Access-Control-Allow-Origin para origem nao permitida', async () => {
+    const req = { method: 'OPTIONS', headers: { origin: 'https://origem-desconhecida.com' } };
+    const res = mockRes();
+
+    await handler(req, res);
+
+    expect(res.setHeader).not.toHaveBeenCalledWith('Access-Control-Allow-Origin', 'https://origem-desconhecida.com');
+    expect(res.status).toHaveBeenCalledWith(204);
+  });
+
   test('rejeita metodos diferentes de POST com 405', async () => {
     const req = { method: 'GET', body: {} };
     const res = mockRes();
@@ -23,6 +46,17 @@ describe('api/chat handler', () => {
 
     expect(res.status).toHaveBeenCalledWith(405);
     expect(res.json).toHaveBeenCalledWith({ error: 'Método não permitido' });
+  });
+
+  test('nao quebra quando req.body esta ausente', async () => {
+    process.env.GEMINI_API_KEY = 'chave-de-teste';
+    const req = { method: 'POST', headers: {} };
+    const res = mockRes();
+
+    await handler(req, res);
+
+    expect(res.status).toHaveBeenCalledWith(400);
+    expect(res.json).toHaveBeenCalledWith({ error: 'Mensagem inválida ou vazia.' });
   });
 
   test('retorna 500 quando GEMINI_API_KEY nao esta configurada', async () => {
