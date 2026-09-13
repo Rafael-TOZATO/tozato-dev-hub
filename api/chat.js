@@ -12,7 +12,7 @@ function applyCors(req, res) {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 }
 
-module.exports = async function handler(req, res) {
+export default async function handler(req, res) {
   applyCors(req, res);
 
   if (req.method === 'OPTIONS') {
