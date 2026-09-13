@@ -3,53 +3,280 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tozato Dev Hub</title>
-    <meta name="description" content="Hub & Assistente Pessoal">
-    
-    <link rel="manifest" href="/manifest.json">
-    <meta name="theme-color" content="#090d16">
-
+    <title>Tozato Dev Hub | App & Hub</title>
     <meta property="og:title" content="Tozato Dev Hub">
     <meta property="og:description" content="Hub & Assistente Pessoal">
-    <meta property="og:image" content="https://tozato-dev-hub.vercel.app/banner.jpg">
-    <meta property="og:url" content="https://tozato-dev-hub.vercel.app">
-    <meta property="og:type" content="website">
-
-    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <meta property="og:image" content="https://tozato-ai-chat.vercel.app/banner.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://tozato-ai-chat.vercel.app/banner.jpg">
     
+    <!-- React e ReactDOM via CDN -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <!-- Babel para compilar JSX no navegador -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
     <style>
         body {
             margin: 0;
             padding: 0;
-            background-color: #090d16;
+            background-color: #0b0f19;
             color: #ffffff;
             font-family: Arial, sans-serif;
-        }
-        #root {
             display: flex;
             flex-direction: column;
+            align-items: center;
+            justify-content: center;
             min-height: 100vh;
+        }
+        .banner-container {
+            width: 100%;
+            max-width: 800px;
+            margin-bottom: 12px;
+            padding: 0 16px;
+            box-sizing: border-box;
+            text-align: center;
+        }
+        .banner-container img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+        }
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            padding: 0 16px;
+        }
+        .social-links a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: bold;
+            background-color: #1f2937;
+            padding: 8px 14px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            border: 1px solid #374151;
+            transition: background-color 0.2s, border-color 0.2s;
+        }
+        .social-links a:hover {
+            background-color: #374151;
+            border-color: #059669;
+        }
+        .social-links svg {
+            width: 16px;
+            height: 16px;
+            fill: currentColor;
+        }
+        .chat-container {
+            width: 100%;
+            max-width: 700px;
+            background-color: #111827;
+            border: 1px solid #1f2937;
+            border-radius: 12px;
+            padding: 20px;
+            box-sizing: border-box;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+        }
+        .chat-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .chat-header h1 {
+            margin: 0;
+            font-size: 24px;
+            color: #ffffff;
+        }
+        .chat-header p {
+            margin: 4px 0 0 0;
+            color: #9ca3af;
+            font-size: 14px;
+        }
+        .chat-messages {
+            height: 300px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 16px;
+            padding-right: 4px;
+        }
+        .message {
+            padding: 12px 16px;
+            border-radius: 8px;
+            max-width: 80%;
+            line-height: 1.4;
+            font-size: 14px;
+        }
+        .message.assistant {
+            background-color: #1f2937;
+            color: #f3f4f6;
+            align-self: flex-start;
+        }
+        .message.user {
+            background-color: #059669;
+            color: #ffffff;
+            align-self: flex-end;
+        }
+        .chat-input-area {
+            display: flex;
+            gap: 8px;
+        }
+        .chat-input-area input {
+            flex: 1;
+            background-color: #1f2937;
+            border: 1px solid #374151;
+            border-radius: 8px;
+            padding: 12px;
+            color: #ffffff;
+            font-size: 14px;
+            outline: none;
+        }
+        .chat-input-area input:focus {
+            border-color: #059669;
+        }
+        .chat-input-area button {
+            background-color: #059669;
+            border: none;
+            border-radius: 8px;
+            padding: 0 16px;
+            color: #ffffff;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.2s;
+        }
+        .chat-input-area button:hover {
+            background-color: #047857;
+        }
+        .chat-input-area button:disabled {
+            background-color: #374151;
+            cursor: not-allowed;
         }
     </style>
 </head>
 <body>
+
+    <div class="banner-container">
+        <img src="banner.jpg" alt="TozatoCode-AI Banner">
+    </div>
+
+    <div class="social-links">
+        <a href="https://github.com/Rafael-TOZATO" target="_blank">
+            <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>
+            Repositório
+        </a>
+        <a href="https://www.linkedin.com/in/rafaeltozato81" target="_blank">
+            <svg viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
+            LinkedIn
+        </a>
+        <a href="https://medium.com/@ornelas.tozato" target="_blank">
+            <svg viewBox="0 0 24 24"><path d="M2.846 6.887c.03-.295-.083-.586-.303-.784l-2.24-2.7v-.403h6.958l5.378 11.792 4.728-11.792h6.633v.403l-1.916 1.837c-.165.126-.247.333-.213.538v13.498c-.034.204.048.411.213.537l1.871 1.837v.403h-9.441v-.403l1.933-1.837c.202-.202.202-.262.202-.538v-10.74l-5.25 13.39h-.558l-5.955-13.39v9.081c-.078.272 0 .568.21.772l2.52 3.06v.403h-8.08v-.403l2.52-3.06c.21-.204.288-.5.21-.772v-11.45z"/></svg>
+            Medium
+        </a>
+        <a href="https://web.dio.me/users/ornelas_tozato?tab=achievements" target="_blank">
+            <svg viewBox="0 0 24 24"><path d="M12 0c-6.627 0-12 5.373-12 12s5.373 12 12 12 12-5.373 12-12-5.373-12-12-12zm-2 16h-2v-8h2v8zm6 0h-2v-8h2v8zm-3-10c-.552 0-1-.448-1-1s.448-1 1-1 1 .448 1 1-.448 1-1 1z"/></svg>
+            DIO
+        </a>
+    </div>
+
+    <!-- Container onde o React vai renderizar o chat -->
     <div id="root"></div>
 
+    <!-- Script React estruturado com JSX -->
     <script type="text/babel">
-        function App() {
+        function ChatApp() {
+            const [messages, setMessages] = React.useState([
+                { id: 1, text: "Olá, Rafael! Como posso ajudar você hoje no Tozato Dev Hub?", sender: "assistant" }
+            ]);
+            const [input, setInput] = React.useState("");
+            const [loading, setLoading] = React.useState(false);
+            const messagesEndRef = React.useRef(null);
+
+            const scrollToBottom = () => {
+                messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+            };
+
+            React.useEffect(() => {
+                scrollToBottom();
+            }, [messages, loading]);
+
+            const handleSend = async (e) => {
+                e.preventDefault();
+                const trimmed = input.trim();
+                if (!trimmed || loading) return;
+
+                const userMsg = { id: Date.now(), text: trimmed, sender: "user" };
+                setMessages(prev => [...prev, userMsg]);
+                setInput("");
+                setLoading(true);
+
+                try {
+                    const response = await fetch('/api/chat', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ message: trimmed })
+                    });
+
+                    const data = await response.json();
+
+                    if (!response.ok) {
+                        throw new Error(data.error || 'Erro ao comunicar com o servidor.');
+                    }
+
+                    const assistantMsg = { id: Date.now() + 1, text: data.reply, sender: "assistant" };
+                    setMessages(prev => [...prev, assistantMsg]);
+                } catch (error) {
+                    const errorMsg = { id: Date.now() + 1, text: 'Erro: ' + error.message, sender: "assistant" };
+                    setMessages(prev => [...prev, errorMsg]);
+                } finally {
+                    setLoading(false);
+                }
+            };
+
             return (
-                <div style={{ padding: '20px', textAlign: 'center' }}>
-                    <h1>Tozato Dev Hub</h1>
-                    <p>Hub & Assistente Pessoal</p>
+                <div className="chat-container">
+                    <div className="chat-header">
+                        <h1>Tozato Dev Hub</h1>
+                        <p>Hub & Assistente Pessoal (React Powered)</p>
+                    </div>
+                    
+                    <div className="chat-messages">
+                        {messages.map((msg) => (
+                            <div key={msg.id} className={`message ${msg.sender}`}>
+                                {msg.text}
+                            </div>
+                        ))}
+                        {loading && (
+                            <div className="message assistant">Pensando...</div>
+                        )}
+                        <div ref={messagesEndRef} />
+                    </div>
+
+                    <form className="chat-input-area" onSubmit={handleSend}>
+                        <input 
+                            type="text" 
+                            value={input}
+                            onChange={(e) => setInput(e.target.value)}
+                            placeholder="Digite sua mensagem..." 
+                            autoComplete="off"
+                            disabled={loading}
+                        />
+                        <button type="submit" disabled={loading}>Enviar</button>
+                    </form>
                 </div>
             );
         }
 
-        ReactDOM.render(<App />, document.getElementById('root'));
+        ReactDOM.createRoot(document.getElementById('root')).render(<ChatApp />);
     </script>
 
+    <!-- Script de Análise Web da Vercel -->
     <script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>
