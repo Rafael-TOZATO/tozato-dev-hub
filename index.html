@@ -133,7 +133,6 @@
     <meta name="theme-color" content="#090d16">
     <link rel="manifest" href="manifest.json">
     
-    
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
@@ -150,3 +149,73 @@
             <div class="absolute top-4 left-4">
                 <span class="w-3 h-3 rounded-full bg-emerald-500 inline-block animate-pulse"></span>
             </div>
+            <h1 class="text-xl font-bold tracking-tight">Tozato Dev Hub</h1>
+            <p class="text-xs text-slate-400 mt-1">Hub & Assistente Pessoal</p>
+        </div>
+
+        <div id="chat-container" class="chat-container p-4 flex-1 overflow-y-auto max-h-[60vh] space-y-4">
+            <div class="flex items-start space-x-2">
+                <div class="bg-slate-800 text-slate-100 p-3 rounded-2xl text-sm max-w-[85%] leading-relaxed shadow">
+                    Olá, Rafael! Como posso ajudar você hoje no Tozato Dev Hub?
+                </div>
+            </div>
+        </div>
+
+        <div class="p-4 border-t border-slate-800 bg-slate-900/90">
+            <form id="chat-form" class="flex gap-2">
+                <input id="chat-input" type="text" placeholder="Digite sua mensagem..." class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-slate-100 focus:outline-none focus:border-emerald-500 transition">
+                <button type="submit" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2.5 rounded-xl text-sm transition flex items-center justify-center">
+                    <i class="fa-solid fa-paper-plane"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('chat-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const input = document.getElementById('chat-input');
+            const container = document.getElementById('chat-container');
+            const message = input.value.trim();
+            
+            if (!message) return;
+
+            const userDiv = document.createElement('div');
+            userDiv.className = 'flex justify-end';
+            userDiv.innerHTML = `<div class="bg-emerald-600 text-white p-3 rounded-2xl text-sm max-w-[85%] leading-relaxed shadow">${message}</div>`;
+            container.appendChild(userDiv);
+            input.value = '';
+            container.scrollTop = container.scrollHeight;
+
+            const loadingDiv = document.createElement('div');
+            loadingDiv.className = 'flex items-start space-x-2';
+            loadingDiv.id = 'loading-response';
+            loadingDiv.innerHTML = `<div class="bg-slate-800 p-3 rounded-2xl text-sm text-slate-400">Pensando...</div>`;
+            container.appendChild(loadingDiv);
+            container.scrollTop = container.scrollHeight;
+
+            try {
+                const res = await fetch('/api/chat', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ message })
+                });
+                const data = await res.json();
+                document.getElementById('loading-response').remove();
+
+                const aiDiv = document.createElement('div');
+                aiDiv.className = 'flex items-start space-x-2';
+                aiDiv.innerHTML = `<div class="bg-slate-800 text-slate-100 p-3 rounded-2xl text-sm max-w-[85%] leading-relaxed shadow">${data.reply || data.error || 'Erro na resposta'}</div>`;
+                container.appendChild(aiDiv);
+            } catch (err) {
+                document.getElementById('loading-response').remove();
+                const errDiv = document.createElement('div');
+                errDiv.className = 'flex items-start space-x-2';
+                errDiv.innerHTML = `<div class="bg-red-900/50 text-red-200 p-3 rounded-2xl text-sm max-w-[85%]">Erro de conexão com o servidor.</div>`;
+                container.appendChild(errDiv);
+            }
+            container.scrollTop = container.scrollHeight;
+        });
+    </script>
+</body>
+</html>
