@@ -1,15 +1,55 @@
-{
-  "name": "Tozato Dev Hub",
-  "short_name": "Tozato Hub",
-  "start_url": ".",
-  "display": "standalone",
-  "background_color": "#090d16",
-  "theme_color": "#090d16",
-  "icons": [
-    {
-      "src": "banner.jpg",
-      "sizes": "512x512",
-      "type": "image/jpeg"
-    }
-  ]
-}
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tozato Dev Hub</title>
+    <meta name="description" content="Hub & Assistente Pessoal">
+    
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#090d16">
+
+    <meta property="og:title" content="Tozato Dev Hub">
+    <meta property="og:description" content="Hub & Assistente Pessoal">
+    <meta property="og:image" content="https://tozato-dev-hub.vercel.app/banner.jpg">
+    <meta property="og:url" content="https://tozato-dev-hub.vercel.app">
+    <meta property="og:type" content="website">
+
+    <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #090d16;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+        }
+        #root {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        function App() {
+            return (
+                <div style={{ padding: '20px', textAlign: 'center' }}>
+                    <h1>Tozato Dev Hub</h1>
+                    <p>Hub & Assistente Pessoal</p>
+                </div>
+            );
+        }
+
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+
+    <script defer src="/_vercel/insights/script.js"></script>
+</body>
+</html>
