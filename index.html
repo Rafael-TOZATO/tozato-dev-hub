@@ -9,6 +9,13 @@
     <meta property="og:image" content="https://tozato-ai-chat.vercel.app/banner.jpg">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://tozato-ai-chat.vercel.app/banner.jpg">
+    
+    <!-- React e ReactDOM via CDN -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <!-- Babel para compilar JSX no navegador -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
     <style>
         body {
             margin: 0;
@@ -147,6 +154,10 @@
         .chat-input-area button:hover {
             background-color: #047857;
         }
+        .chat-input-area button:disabled {
+            background-color: #374151;
+            cursor: not-allowed;
+        }
     </style>
 </head>
 <body>
@@ -174,83 +185,98 @@
         </a>
     </div>
 
-    <div class="chat-container">
-        <div class="chat-header">
-            <h1>Tozato Dev Hub</h1>
-            <p>Hub & Assistente Pessoal</p>
-        </div>
-        
-        <div class="chat-messages" id="chatMessages">
-            <div class="message assistant">Olá, Rafael! Como posso ajudar você hoje no Tozato Dev Hub?</div>
-        </div>
+    <!-- Container onde o React vai renderizar o chat -->
+    <div id="root"></div>
 
-        <div class="chat-input-area">
-            <input type="text" id="userInput" placeholder="Digite sua mensagem..." autocomplete="off">
-            <button id="sendButton">Enviar</button>
-        </div>
-    </div>
+    <!-- Script React estruturado com JSX -->
+    <script type="text/babel">
+        function ChatApp() {
+            const [messages, setMessages] = React.useState([
+                { id: 1, text: "Olá, Rafael! Como posso ajudar você hoje no Tozato Dev Hub?", sender: "assistant" }
+            ]);
+            const [input, setInput] = React.useState("");
+            const [loading, setLoading] = React.useState(false);
+            const messagesEndRef = React.useRef(null);
 
-    <script>
-        const chatMessages = document.getElementById('chatMessages');
-        const inputField = document.getElementById('userInput');
-        const sendButton = document.getElementById('sendButton');
+            const scrollToBottom = () => {
+                messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+            };
 
-        async function handleSendMessage() {
-            const messageText = inputField.value.trim();
-            if (!messageText) return;
+            React.useEffect(() => {
+                scrollToBottom();
+            }, [messages, loading]);
 
-            appendMessage(messageText, 'user');
-            inputField.value = '';
-            inputField.disabled = true;
-            sendButton.disabled = true;
+            const handleSend = async (e) => {
+                e.preventDefault();
+                const trimmed = input.trim();
+                if (!trimmed || loading) return;
 
-            const loadingId = appendMessage('Pensando...', 'assistant');
+                const userMsg = { id: Date.now(), text: trimmed, sender: "user" };
+                setMessages(prev => [...prev, userMsg]);
+                setInput("");
+                setLoading(true);
 
-            try {
-                const response = await fetch('/api/chat', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message: messageText })
-                });
+                try {
+                    const response = await fetch('/api/chat', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ message: trimmed })
+                    });
 
-                const data = await response.json();
-                removeMessage(loadingId);
+                    const data = await response.json();
 
-                if (!response.ok) {
-                    throw new Error(data.error || 'Erro ao comunicar com o servidor.');
+                    if (!response.ok) {
+                        throw new Error(data.error || 'Erro ao comunicar com o servidor.');
+                    }
+
+                    const assistantMsg = { id: Date.now() + 1, text: data.reply, sender: "assistant" };
+                    setMessages(prev => [...prev, assistantMsg]);
+                } catch (error) {
+                    const errorMsg = { id: Date.now() + 1, text: 'Erro: ' + error.message, sender: "assistant" };
+                    setMessages(prev => [...prev, errorMsg]);
+                } finally {
+                    setLoading(false);
                 }
+            };
 
-                appendMessage(data.reply, 'assistant');
-            } catch (error) {
-                removeMessage(loadingId);
-                appendMessage('Erro: ' + error.message, 'assistant');
-            } finally {
-                inputField.disabled = false;
-                sendButton.disabled = false;
-                inputField.focus();
-            }
+            return (
+                <div className="chat-container">
+                    <div className="chat-header">
+                        <h1>Tozato Dev Hub</h1>
+                        <p>Hub & Assistente Pessoal (React Powered)</p>
+                    </div>
+                    
+                    <div className="chat-messages">
+                        {messages.map((msg) => (
+                            <div key={msg.id} className={`message ${msg.sender}`}>
+                                {msg.text}
+                            </div>
+                        ))}
+                        {loading && (
+                            <div className="message assistant">Pensando...</div>
+                        )}
+                        <div ref={messagesEndRef} />
+                    </div>
+
+                    <form className="chat-input-area" onSubmit={handleSend}>
+                        <input 
+                            type="text" 
+                            value={input}
+                            onChange={(e) => setInput(e.target.value)}
+                            placeholder="Digite sua mensagem..." 
+                            autoComplete="off"
+                            disabled={loading}
+                        />
+                        <button type="submit" disabled={loading}>Enviar</button>
+                    </form>
+                </div>
+            );
         }
 
-        function appendMessage(text, sender) {
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${sender}`;
-            messageDiv.textContent = text;
-            const id = 'msg-' + Date.now() + Math.random();
-            messageDiv.id = id;
-            chatMessages.appendChild(messageDiv);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-            return id;
-        }
-
-        function removeMessage(id) {
-            const el = document.getElementById(id);
-            if (el) el.remove();
-        }
-
-        sendButton.addEventListener('click', handleSendMessage);
-        inputField.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') handleSendMessage();
-        });
+        ReactDOM.createRoot(document.getElementById('root')).render(<ChatApp />);
     </script>
+
+    <!-- Script de Análise Web da Vercel -->
+    <script defer src="/_vercel/insights/script.js"></script>
 </body>
 </html>
