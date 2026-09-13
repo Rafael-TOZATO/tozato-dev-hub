@@ -7,125 +7,16 @@
     
     <meta property="og:title" content="TozatoCode-AI | Hub Profissional & Assistente">
     <meta property="og:description" content="Assistente pessoal de desenvolvimento e hub interativo criado por Rafael Ornelas Tozato.">
-    <meta property="og:image" content="https://tozato-dev-hub.vercel.app/banner.jpg">
-    <meta property="og:url" content="https://tozato-dev-hub.vercel.app/">
+    <meta property="og:image" content="https://tozato-ai-chat.vercel.app/banner.jpg">
+    <meta property="og:url" content="https://tozato-ai-chat.vercel.app/">
     <meta property="og:type" content="website">
 
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="TozatoCode-AI | Hub Profissional & Assistente">
     <meta name="twitter:description" content="Assistente pessoal de desenvolvimento e hub interativo criado por Rafael Ornelas Tozato.">
-    <meta name="twitter:image" content="https://tozato-dev-hub.vercel.app/banner.jpg">
+    <meta name="twitter:image" content="https://tozato-ai-chat.vercel.app/banner.jpg">
+    
     <!-- Ícones e Atalho para Tela Inicial -->
-    <link rel="icon" type="image/jpeg" href="banner.jpg">
-    <link rel="apple-touch-icon" href="banner.jpg">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="theme-color" content="#090d16">
-    <link rel="manifest" href="manifest.json">
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        .chat-container { scroll-behavior: smooth; }
-    </style>
-</head>
-<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col items-center justify-between p-4 md:p-6">
-
-    <div id="app" class="w-full max-w-md bg-slate-900 border border-slate-800 rounded-3xl shadow-2xl overflow-hidden flex flex-col my-auto">
-        
-        <div class="p-5 border-b border-slate-800 bg-slate-900/90 flex flex-col items-center text-center relative">
-            <div class="absolute top-4 left-4">
-                <span class="w-3 h-3 rounded-full bg-emerald-500 inline-block animate-pulse"></span>
-            </div>
-            <h1 class="text-lg font-bold">Tozato Dev Hub</h1>
-            <p class="text-xs text-slate-400">Assistente Ativo</p>
-        </div>
-
-        <div id="chat-container" class="chat-container p-4 flex-1 overflow-y-auto max-h-[60vh] space-y-4">
-            <div class="flex items-start space-x-2">
-                <div class="bg-slate-800 p-3 rounded-2xl text-sm max-w-[85%]">
-                    Olá, Rafael! Digite repos ou faça sua pergunta para começar.
-                </div>
-            </div>
-        </div>
-
-        <div class="p-4 border-t border-slate-800 bg-slate-900/90">
-            <form id="chat-form" class="flex gap-2">
-                <input id="chat-input" type="text" placeholder="Digite sua mensagem..." class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-4 py-2 text-sm text-slate-100 focus:outline-none focus:border-emerald-500">
-                <button type="submit" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-xl text-sm transition">
-                    <i class="fa-solid fa-paper-plane"></i>
-                </button>
-            </form>
-        </div>
-    </div>
-
-    <script>
-        document.getElementById('chat-form').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            const input = document.getElementById('chat-input');
-            const container = document.getElementById('chat-container');
-            const message = input.value.trim();
-            
-            if (!message) return;
-
-            const userDiv = document.createElement('div');
-            userDiv.className = 'flex justify-end';
-            userDiv.innerHTML = `<div class="bg-emerald-600 text-white p-3 rounded-2xl text-sm max-w-[85%]">${message}</div>`;
-            container.appendChild(userDiv);
-            input.value = '';
-            container.scrollTop = container.scrollHeight;
-
-            const loadingDiv = document.createElement('div');
-            loadingDiv.className = 'flex items-start space-x-2';
-            loadingDiv.id = 'loading-response';
-            loadingDiv.innerHTML = `<div class="bg-slate-800 p-3 rounded-2xl text-sm text-slate-400">Pensando...</div>`;
-            container.appendChild(loadingDiv);
-            container.scrollTop = container.scrollHeight;
-
-            try {
-                const res = await fetch('/api/chat', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ message })
-                });
-                const data = await res.json();
-                document.getElementById('loading-response').remove();
-
-                const aiDiv = document.createElement('div');
-                aiDiv.className = 'flex items-start space-x-2';
-                aiDiv.innerHTML = `<div class="bg-slate-800 p-3 rounded-2xl text-sm max-w-[85%]">${data.reply || data.error || 'Erro desconhecido'}</div>`;
-                container.appendChild(aiDiv);
-            } catch (err) {
-                document.getElementById('loading-response').remove();
-                const errDiv = document.createElement('div');
-                errDiv.className = 'flex items-start space-x-2';
-                errDiv.innerHTML = `<div class="bg-red-900/50 text-red-200 p-3 rounded-2xl text-sm max-w-[85%]">Erro de conexão com o servidor.</div>`;
-                container.appendChild(errDiv);
-            }
-            container.scrollTop = container.scrollHeight;
-        });
-    </script>
-</body>
-</html><!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tozato Dev Hub | App & Hub</title>
-    
-    <meta property="og:title" content="TozatoCode-AI | Hub Profissional & Assistente">
-    <meta property="og:description" content="Assistente pessoal de desenvolvimento e hub interativo criado por Rafael Ornelas Tozato.">
-    <meta property="og:image" content="https://tozato-dev-hub.vercel.app/banner.jpg">
-    <meta property="og:url" content="https://tozato-dev-hub.vercel.app/">
-    <meta property="og:type" content="website">
-
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="TozatoCode-AI | Hub Profissional & Assistente">
-    <meta name="twitter:description" content="Assistente pessoal de desenvolvimento e hub interativo criado por Rafael Ornelas Tozato.">
-    <meta name="twitter:image" content="https://tozato-dev-hub.vercel.app/banner.jpg">
-      <!-- Ícones e Atalho para Tela Inicial -->
     <link rel="icon" type="image/jpeg" href="banner.jpg">
     <link rel="apple-touch-icon" href="banner.jpg">
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -164,7 +55,7 @@
         <div class="p-4 border-t border-slate-800 bg-slate-900/90">
             <form id="chat-form" class="flex gap-2">
                 <input id="chat-input" type="text" placeholder="Digite sua mensagem..." class="flex-1 bg-slate-950 border border-slate-800 rounded-xl px-4 py-2.5 text-sm text-slate-100 focus:outline-none focus:border-emerald-500 transition">
-                <button type="submit" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2.5 rounded-xl text-sm transition flex items-center justify-center">
+                <button type="submit" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py.5 rounded-xl text-sm transition flex items-center justify-center">
                     <i class="fa-solid fa-paper-plane"></i>
                 </button>
             </form>
