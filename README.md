@@ -8,7 +8,7 @@
 </p>
 
 <p align="center">
-  <img src="banner.gif" alt="TozatoCode-AI Banner" width="100%">
+  <img src="banner.jpg" alt="TozatoCode-AI Banner" width="100%">
 </p>
 
 # TozatoCode-AI Hub
@@ -29,24 +29,24 @@ Aplicação web interativa desenvolvida para centralizar o portfólio profission
 
 * **Exibição em tempo real** de dados do perfil do GitHub.
 * **Listagem e filtragem** de repositórios públicos.
-* **Seção consolidada** de links profissionais e canais de contato.
-* **Interface de chat interativa** para suporte e navegação guiada, com backend serverless integrado à API do Gemini.
+* **Seção consolidada** de links profissionais e canais de contato[cite: 4].
+* **Interface de chat interativa** para suporte e navegação guiada, com backend serverless integrado à API do Gemini[cite: 4].
 
 ---
 
 ## Tecnologias Utilizadas
 
-* HTML5, CSS3 / Tailwind CSS
-* JavaScript (ES6+)
-* GitHub REST API
-* Vercel (hospedagem e função serverless em `api/chat.js`)
-* Google Gemini API
+* HTML5, CSS3 / Tailwind CSS[cite: 4]
+* JavaScript (ES6+)[cite: 4]
+* GitHub REST API[cite: 4]
+* Vercel (hospedagem e função serverless em `api/chat.js`)[cite: 4]
+* Google Gemini API[cite: 4]
 
 ---
 
 ## Testes
 
-O projeto possui testes unitários para a função serverless de chat (`api/chat.js`), cobrindo os principais fluxos: método inválido, ausência de chave de API, respostas e tratamento de erros.
+O projeto possui testes unitários para a função serverless de chat (`api/chat.js`), cobrindo os principais fluxos: método inválido, ausência de chave de API, respostas e tratamento de erros[cite: 4].
 
 Para rodar os testes localmente:
 ```bash
