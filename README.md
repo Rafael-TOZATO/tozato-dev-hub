@@ -8,7 +8,7 @@
 </p>
 
 <p align="center">
-  <img src="tozatocode-banner-web.mp4" width="100%" alt="TozatoCode-AI Banner">
+  <img src="banner.gif" alt="TozatoCode-AI Banner" width="100%">
 </p>
 
 # TozatoCode-AI Hub
