@@ -8,7 +8,7 @@
 </p>
 
 <p align="center">
-  <img src="banner.jpg" alt="TozatoCode-AI Banner" width="100%">
+  <video src="tozatocode-banner-web.mp4" width="100%" autoplay loop muted playsinline></video>
 </p>
 
 # TozatoCode-AI Hub
