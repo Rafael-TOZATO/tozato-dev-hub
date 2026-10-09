@@ -52,3 +52,12 @@ Para rodar os testes localmente:
 ```bash
 npm install
 npm test
+
+## 📞 Contato
+
+- **E-mail:** [ornelas.tozato@gmail.com](mailto:ornelas.tozato@gmail.com)
+- **LinkedIn:** [Rafael Ornelas Tozato](https://www.linkedin.com/in/rafaeltozato81)
+- **Medium:** [Rafael Ornelas Tozato](https://medium.com/@ornelas.tozato)
+- **GitHub:** [Rafael-TOZATO](https://github.com/Rafael-TOZATO)
+- **Lovable:** [aurora-bi-dio.lovable.app](https://aurora-bi-dio.lovable.app)
+
