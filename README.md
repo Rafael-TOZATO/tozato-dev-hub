@@ -39,7 +39,7 @@ Aplicação web interativa desenvolvida para centralizar o portfólio profission
 * HTML5, CSS3 / Tailwind CSS
 * JavaScript (ES6+)
 * GitHub REST API
-* Vercel (hospedagem e função serverless em `api/chat.js`)
+* Vercel (hospedagem e função serverless)
 * Google Gemini API
 
 ---
@@ -48,16 +48,13 @@ Aplicação web interativa desenvolvida para centralizar o portfólio profission
 
 O projeto possui testes unitários para a função serverless de chat (`api/chat.js`), cobrindo os principais fluxos: método inválido, ausência de chave de API, respostas e tratamento de erros.
 
-Para rodar os testes localmente:
-```bash
-npm install
-npm test
+---
 
-## 📞 Contato
+## 📬 Contatos
 
-- **E-mail:** [ornelas.tozato@gmail.com](mailto:ornelas.tozato@gmail.com)
-- **LinkedIn:** [Rafael Ornelas Tozato](https://www.linkedin.com/in/rafaeltozato81)
-- **Medium:** [Rafael Ornelas Tozato](https://medium.com/@ornelas.tozato)
-- **GitHub:** [Rafael-TOZATO](https://github.com/Rafael-TOZATO)
-- **Lovable:** [aurora-bi-dio.lovable.app](https://aurora-bi-dio.lovable.app)
+- 💼 **LinkedIn:** [rafaeltozato81](https://www.linkedin.com/in/rafaeltozato81)
+- 🐙 **GitHub:** [Rafael-TOZATO](https://github.com/Rafael-TOZATO)
+- ✍️ **Medium:** [@ornelas.tozato](https://medium.com/@ornelas.tozato)
+- 🌐 **Portfólio PWA:** [tozato-dev-hub.vercel.app](https://tozato-dev-hub.vercel.app)
+- 🚀 **Aurora BI (Lovable):** [aurora-bi-dio.lovable.app](https://aurora-bi-dio.lovable.app)
 
