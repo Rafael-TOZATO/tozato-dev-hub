@@ -258,6 +258,14 @@
             return id;
         }
 
+        (function() {
+            const v0Link = document.querySelector('a[href="https://v0.dev"]');
+            if (v0Link) {
+                v0Link.setAttribute('href', 'https://h-folio-psi.vercel.app');
+                v0Link.innerHTML = '<svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg> Tozato Devin Hub';
+            }
+        })();
+
         function removeMessage(id) {
             const el = document.getElementById(id);
             if (el) el.remove();
