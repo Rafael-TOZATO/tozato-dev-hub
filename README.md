@@ -1,79 +1,73 @@
 <p align="center">
-  <img src="https://img.shields.io/badge/Status-Ativo-success?style=for-the-badge&logo=git" alt="Status">
-  <img src="https://img.shields.io/badge/Branch%20Protection-Active-success?style=for-the-badge&logo=github" alt="Branch Protection">
-  <img src="https://img.shields.io/badge/HTML5%2FCSS3-E34F26?style=for-the-badge&logo=html5&logoColor=white" alt="HTML5/CSS3">
-  <img src="https://img.shields.io/badge/Tailwind%20CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white" alt="Tailwind CSS">
-  <img src="https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black" alt="JavaScript">
-  <img src="https://img.shields.io/badge/Gemini%20API-8E75B2?style=for-the-badge&logo=googlegemini&logoColor=white" alt="Gemini API">
+  <img src="./banner.jpg" alt="Banner do TozatoCode-AI Hub" width="100%">
 </p>
+
+<h1 align="center">TozatoCode-AI Hub</h1>
 
 <p align="center">
-  <a href="https://github.com/Rafael-TOZATO/tozato-dev-hub"><img src="https://img.shields.io/badge/Reposit%C3%B3rio-181717?style=for-the-badge&logo=github&logoColor=white" alt="Repositório"></a>
-  <a href="https://www.linkedin.com/in/rafaeltozato81"><img src="https://img.shields.io/badge/LinkedIn-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white" alt="LinkedIn"></a>
-  <a href="https://medium.com/@ornelas.tozato"><img src="https://img.shields.io/badge/Medium-12100E?style=for-the-badge&logo=medium&logoColor=white" alt="Medium"></a>
-  <a href="https://learn.microsoft.com/pt-br/users/rafaelornelastozato-2209/transcript/dzo2wizrzkx2853"><img src="https://img.shields.io/badge/Microsoft%20Learn-0078D4?style=for-the-badge&logo=microsoft&logoColor=white" alt="Microsoft Learn"></a>
+  <a href="https://nodejs.org/">
+    <img src="https://img.shields.io/badge/Node.js-18%2B-339933?style=for-the-badge&amp;logo=node.js&amp;logoColor=white" alt="Node.js 18+">
+  </a>
+  <a href="https://jestjs.io/">
+    <img src="https://img.shields.io/badge/Jest-29.7.0-C21325?style=for-the-badge&amp;logo=jest&amp;logoColor=white" alt="Jest 29.7.0">
+  </a>
+  <a href="https://tozato-dev-hub.vercel.app/">
+    <img src="https://img.shields.io/badge/Vercel-live-000000?style=for-the-badge&amp;logo=vercel&amp;logoColor=white" alt="Hospedado na Vercel">
+  </a>
+  <a href="https://github.com/Rafael-TOZATO/tozato-dev-hub/blob/main/LICENSE">
+    <img src="https://img.shields.io/github/license/Rafael-TOZATO/tozato-dev-hub?style=for-the-badge" alt="Licença">
+  </a>
+  <a href="https://codeql.github.com/">
+    <img src="https://img.shields.io/badge/CodeQL-security%20analysis-0F80C1?style=for-the-badge&amp;logo=github&amp;logoColor=white" alt="CodeQL — análise de segurança">
+  </a>
+  <a href="https://github.com/Rafael-TOZATO/tozato-dev-hub/commits/main/">
+    <img src="https://img.shields.io/badge/Maintained-Yes-2ea44f?style=for-the-badge" alt="Projeto mantido">
+  </a>
 </p>
-
-<p align="center">
-  <img src="banner.jpg" alt="TozatoCode-AI Banner" width="100%">
-</p>
-
-# TozatoCode-AI Hub
-
-> **Autor:** Rafael Ornelas Tozato  
-> **Aplicação ao Vivo:** [tozato-dev-hub.vercel.app](https://tozato-dev-hub.vercel.app)  
-> **Governança Técnica:** Branch protection ativa  
-
----
 
 ## Sobre o Projeto
 
-Aplicação web interativa desenvolvida para centralizar o portfólio profissional, listagem dinâmica de repositórios via GitHub API e assistente conversacional integrado. O hub une inteligência artificial e engenharia de software sob a identidade visual da **TozatoCode-AI** (*Transforme ideias em impacto*).
+O **TozatoCode-AI Hub** é uma aplicação web interativa que reúne o portfólio profissional, apresenta dados e repositórios públicos do GitHub e oferece um assistente conversacional integrado à API do Google Gemini. O projeto combina engenharia de software e inteligência artificial sob a identidade da **TozatoCode-AI**.
 
----
+## Validações e Melhorias Recentes
 
-## Funcionalidades
+- **Suíte automatizada:** 11 testes com Jest, executados com suporte a módulos ESM. Cobrem CORS, métodos inválidos, mensagem ausente ou vazia, ausência da chave de API, respostas bem-sucedidas, erros da API, bloqueio de segurança e timeout.
+- **Smoke tests locais:** a página e os assets foram servidos com HTTP 200; `/api/chat` respondeu 204 ao preflight e 405 a uma requisição GET, conforme esperado.
+- **Homologação da integração:** uma chamada de teste à API publicada respondeu HTTP 200.
+- **Servidor local:** `npm start` serve a página e encaminha as requisições de `/api/chat` ao handler local. A porta padrão é `3000` e pode ser alterada pela variável `PORT`.
+- **CodeQL:** o selo identifica a ferramenta; não indica que a análise automática esteja ativa. O repositório ainda não tem um workflow CodeQL configurado.
 
-- **Exibição em tempo real** de dados do perfil do GitHub.
-- **Listagem e filtragem** de repositórios públicos.
-- **Seção consolidada** de links profissionais e canais de contato.
-- **Interface de chat interativa** para suporte e navegação guiada, com backend serverless integrado à API do Gemini.
-
----
-
-## Tecnologias Utilizadas
-
-- HTML5, CSS3 / Tailwind CSS
-- JavaScript (ES6+)
-- GitHub REST API
-- Vercel (hospedagem e função serverless)
-- Google Gemini API
-
----
-
-## Execução local
+## Como Executar o Projeto Localmente
 
 Requer Node.js 18 ou superior.
 
-```bash
-npm ci
-npm start
-```
+1. Instale as dependências:
 
-O servidor local fica disponível em `http://localhost:3000` por padrão e aceita uma porta diferente pela variável `PORT`. Ele serve a página estática e encaminha `/api/chat` para a função serverless local. Para testar chamadas reais ao Gemini, configure `GEMINI_API_KEY` no ambiente antes de iniciar o servidor.
+   ```bash
+   npm install
+   ```
 
-## Testes
+2. Inicie a aplicação:
 
-Execute `npm test` para rodar os testes unitários da função serverless de chat (`api/chat.mjs`). A suíte cobre CORS, métodos inválidos, ausência de configuração, validação da mensagem, respostas bem-sucedidas, erros da API e timeout.
+   ```bash
+   npm start
+   ```
 
----
+   Por padrão, o servidor fica disponível em `http://localhost:3000`. Para testar o chat com o Gemini, configure `GEMINI_API_KEY` no ambiente antes de iniciar a aplicação.
 
-## 📬 Contatos
+3. Em outro terminal, execute os testes:
 
-- 💼 **LinkedIn:** [rafaeltozato81](https://www.linkedin.com/in/rafaeltozato81)
-- 🐙 **GitHub:** [Rafael-TOZATO](https://github.com/Rafael-TOZATO)
-- ✍️ **Medium:** [@ornelas.tozato](https://medium.com/@ornelas.tozato)
-- 🌐 **Portfólio PWA (Dev Hub):** [tozato-dev-hub.vercel.app](https://tozato-dev-hub.vercel.app)
-- 🌐 **H-Folio:** [h-folio-psi.vercel.app](https://h-folio-psi.vercel.app)
-- 🚀 **Aurora BI (Lovable):** [aurora-bi-dio.lovable.app](https://aurora-bi-dio.lovable.app)
-- 📜 **Microsoft Learn:** [Transcript](https://learn.microsoft.com/pt-br/users/rafaelornelastozato-2209/transcript/dzo2wizrzkx2853)
+   ```bash
+   npm test
+   ```
+
+## Contatos e Conexões
+
+- **LinkedIn:** [rafaeltozato81](https://www.linkedin.com/in/rafaeltozato81)
+- **GitHub:** [Rafael-TOZATO](https://github.com/Rafael-TOZATO)
+- **Repositório do projeto:** [tozato-dev-hub](https://github.com/Rafael-TOZATO/tozato-dev-hub)
+- **Medium:** [@ornelas.tozato](https://medium.com/@ornelas.tozato)
+- **Microsoft Learn:** [Transcript](https://learn.microsoft.com/pt-br/users/rafaelornelastozato-2209/transcript/dzo2wizrzkx2853)
+- **Portfólio PWA — Tozato Dev Hub:** [tozato-dev-hub.vercel.app](https://tozato-dev-hub.vercel.app)
+- **H-Folio:** [h-folio-psi.vercel.app](https://h-folio-psi.vercel.app)
+- **Aurora BI (Lovable):** [aurora-bi-dio.lovable.app](https://aurora-bi-dio.lovable.app)
