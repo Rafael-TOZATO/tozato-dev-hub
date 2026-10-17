@@ -51,9 +51,20 @@ Aplicação web interativa desenvolvida para centralizar o portfólio profission
 
 ---
 
+## Execução local
+
+Requer Node.js 18 ou superior.
+
+```bash
+npm ci
+npm start
+```
+
+O servidor local fica disponível em `http://localhost:3000` por padrão e aceita uma porta diferente pela variável `PORT`. Ele serve a página estática e encaminha `/api/chat` para a função serverless local. Para testar chamadas reais ao Gemini, configure `GEMINI_API_KEY` no ambiente antes de iniciar o servidor.
+
 ## Testes
 
-O projeto possui testes unitários para a função serverless de chat (`api/chat.js`), cobrindo os principais fluxos: método inválido, ausência de chave de API, respostas e tratamento de erros.
+Execute `npm test` para rodar os testes unitários da função serverless de chat (`api/chat.mjs`). A suíte cobre CORS, métodos inválidos, ausência de configuração, validação da mensagem, respostas bem-sucedidas, erros da API e timeout.
 
 ---
 
