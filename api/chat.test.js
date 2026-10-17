@@ -1,4 +1,4 @@
-const handler = require('./chat');
+let handler;
 
 function mockRes() {
   const res = {};
@@ -11,9 +11,19 @@ function mockRes() {
 
 describe('api/chat handler', () => {
   const originalApiKey = process.env.GEMINI_API_KEY;
+  const originalFetch = global.fetch;
+
+  beforeAll(async () => {
+    ({ default: handler } = await import('./chat.mjs'));
+  });
 
   afterEach(() => {
-    process.env.GEMINI_API_KEY = originalApiKey;
+    if (originalApiKey === undefined) {
+      delete process.env.GEMINI_API_KEY;
+    } else {
+      process.env.GEMINI_API_KEY = originalApiKey;
+    }
+    global.fetch = originalFetch;
     jest.restoreAllMocks();
   });
 

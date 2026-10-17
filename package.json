@@ -4,7 +4,8 @@
   "description": "Aplicacao web interativa que centraliza o portfolio profissional, listagem dinamica de repositorios via GitHub API e assistente conversacional integrado.",
   "type": "commonjs",
   "scripts": {
-    "test": "jest"
+    "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js",
+    "start": "node scripts/dev-server.mjs"
   },
   "devDependencies": {
     "jest": "^29.7.0"
