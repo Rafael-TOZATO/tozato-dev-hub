@@ -1,5 +1,6 @@
 const ALLOWED_ORIGINS = [
   'https://tozato-dev-hub.vercel.app',
+  'https://tozato-dev-hub-app.vercel.app',
   'https://rafael-tozato.github.io'
 ];
 
