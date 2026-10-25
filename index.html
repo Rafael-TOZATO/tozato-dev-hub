@@ -265,10 +265,10 @@
             if (el) el.remove();
         }
 
-        sendButton.addEventListener('click', handleSendMessage);
-        inputField.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') handleSendMessage();
-        });
-    </script>
-</body>
-</html>
+       sendButton.addEventListener('click', handleSendMessage);
+inputField.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        handleSendMessage();
+    }
+});
