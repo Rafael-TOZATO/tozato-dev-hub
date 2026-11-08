@@ -70,3 +70,9 @@ Requer Node.js 18 ou superior.
 - 🌐 **Portfólio PWA (Dev Hub):** [tozato-dev-hub.vercel.app](https://tozato-dev-hub.vercel.app)
 - 🌐 **H-Folio:** [h-folio-l0.vercel.app](https://h-folio-l0.vercel.app/)
 - 📜 **Microsoft Learn:** [Transcript](https://learn.microsoft.com/pt-br/users/rafaelornelastozato-2209/transcript/dzo2wizrzkx2853)
+
+## Contribuição e Suporte
+
+Encontrou algum erro ou tem sugestões de melhoria? Utilize nossos templates oficiais de governança:
+
+* 🐛 [Relatar um Bug](.github/ISSUE_TEMPLATE/bug_report.md)
