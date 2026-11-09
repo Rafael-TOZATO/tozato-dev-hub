@@ -62,6 +62,20 @@ Requer Node.js 18 ou superior.
 
     ```
 
+---
+
+## 🤝 Contribuição e Governança
+
+Contribuições e relatos de bugs são bem-vindos para o aprimoramento contínuo da plataforma.
+
+* **Reportar Bugs:** Abra uma [Issue de Bug](https://github.com/Rafael-TOZATO/NOME-DO-REPOSITORIO/issues/new?template=bug_report.md) detalhando o comportamento esperado, logs e ambiente de execução.
+* **Sugestões de Features:** Abra uma [Issue de Melhoria](https://github.com/Rafael-TOZATO/NOME-DO-REPOSITORIO/issues/new?template=feature_request.md).
+* **Pull Requests:** Antes de enviar um PR, certifique-se de vincular a uma issue existente para validação do Quality Gate.
+
+Para mais detalhes sobre os padrões de commits e arquitetura, consulte o nosso [Guia de Contribuição](./CONTRIBUTING.md).
+
+---
+
 ## 💻 PROJETOS E PORTFÓLIOS
 - **App Ecosystem:** [tozato-ai-core.vercel.app](https://tozato-ai-core.vercel.app)
 - **H-Folio:** [h-folio-l0.vercel.app](https://h-folio-l0.vercel.app)
