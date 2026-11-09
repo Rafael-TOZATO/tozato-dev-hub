@@ -9,7 +9,6 @@
   <a href="https://github.com/Rafael-TOZATO/tozato-dev-hub/network/members"><img src="https://img.shields.io/github/forks/Rafael-TOZATO/tozato-dev-hub?style=for-the-badge&color=0088cc" alt="Forks"></a>
 </p>
 
-    <img src="https://img.shields.io/badge/Node.js-18%2B-339933?style=for-the-badge&amp;logo=node.js&amp;logoColor=white" alt="Node.js 18+">
   </a>
   <a href="https://jestjs.io/">
     <img src="https://img.shields.io/badge/Jest-29.7.0-C21325?style=for-the-badge&amp;logo=jest&amp;logoColor=white" alt="Jest 29.7.0">
