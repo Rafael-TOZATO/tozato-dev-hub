@@ -1,3 +1,5 @@
+const MAX_MESSAGE_LENGTH = 8000;
+
 const ALLOWED_ORIGINS = [
   'https://tozato-dev-hub.vercel.app',
   'https://tozato-dev-hub-app.vercel.app',
@@ -9,6 +11,9 @@ function applyCors(req, res) {
   if (ALLOWED_ORIGINS.includes(origin)) {
     res.setHeader('Access-Control-Allow-Origin', origin);
   }
+  res.setHeader('Vary', 'Origin');
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('Referrer-Policy', 'strict-origin-when-cross-origin');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 }
@@ -25,33 +30,47 @@ export default async function handler(req, res) {
   }
 
   const { message } = req.body || {};
-  const apiKey = process.env.GEMINI_API_KEY;
-
-  if (!apiKey) {
-    return res.status(500).json({ error: 'Chave de API não configurada.' });
-  }
 
   if (typeof message !== 'string' || message.trim() === '') {
     return res.status(400).json({ error: 'Mensagem inválida ou vazia.' });
+  }
+
+  if (message.length > MAX_MESSAGE_LENGTH) {
+    return res.status(413).json({ error: 'Mensagem excede o limite de 8000 caracteres.' });
+  }
+
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey) {
+    return res.status(500).json({ error: 'Chave de API não configurada.' });
   }
 
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 9000);
 
   try {
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent?key=${apiKey}`, {
+    const response = await fetch('https://generativelanguage.googleapis.com/v1beta/models/gemini-3.6-flash:generateContent', {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        'x-goog-api-key': apiKey
+      },
       body: JSON.stringify({
-        contents: [{ role: "user", parts: [{ text: message }] }]
+        contents: [{ role: 'user', parts: [{ text: message.trim() }] }]
       }),
       signal: controller.signal
     });
 
-    const data = await response.json();
+    let data;
+    try {
+      data = await response.json();
+    } catch {
+      return res.status(502).json({ error: 'A API de IA retornou uma resposta inválida.' });
+    }
 
     if (!response.ok) {
-      throw new Error(data.error?.message || 'Erro ao comunicar com a API');
+      return res.status(response.status === 429 ? 503 : 502).json({
+        error: 'Não foi possível concluir a consulta à API de IA.'
+      });
     }
 
     const reply = data.candidates?.[0]?.content?.parts?.[0]?.text;
@@ -65,7 +84,7 @@ export default async function handler(req, res) {
     if (error.name === 'AbortError') {
       return res.status(504).json({ error: 'Tempo limite excedido ao consultar a API.' });
     }
-    return res.status(500).json({ error: error.message });
+    return res.status(502).json({ error: 'Falha ao comunicar com o serviço de IA.' });
   } finally {
     clearTimeout(timeout);
   }
