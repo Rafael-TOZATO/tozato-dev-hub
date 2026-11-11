@@ -3,3 +3,8 @@ Thumbs.db
 *.log
 .vscode/
 node_modules/
+coverage/
+.vercel/
+.env
+.env.*
+!.env.example
