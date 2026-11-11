@@ -95,6 +95,8 @@ describe('api/chat handler', () => {
     await handler(req, res);
 
     expect(global.fetch).toHaveBeenCalledTimes(1);
+    expect(global.fetch.mock.calls[0][0]).not.toContain('chave-de-teste');
+    expect(global.fetch.mock.calls[0][1].headers['x-goog-api-key']).toBe('chave-de-teste');
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.json).toHaveBeenCalledWith({ reply: 'Resposta da IA' });
   });
@@ -111,8 +113,8 @@ describe('api/chat handler', () => {
 
     await handler(req, res);
 
-    expect(res.status).toHaveBeenCalledWith(500);
-    expect(res.json).toHaveBeenCalledWith({ error: 'Limite de requisicoes excedido' });
+    expect(res.status).toHaveBeenCalledWith(502);
+    expect(res.json).toHaveBeenCalledWith({ error: 'Não foi possível concluir a consulta à API de IA.' });
   });
 
   test('retorna 500 quando o fetch falha por erro de rede', async () => {
@@ -124,8 +126,8 @@ describe('api/chat handler', () => {
 
     await handler(req, res);
 
-    expect(res.status).toHaveBeenCalledWith(500);
-    expect(res.json).toHaveBeenCalledWith({ error: 'Falha de conexao' });
+    expect(res.status).toHaveBeenCalledWith(502);
+    expect(res.json).toHaveBeenCalledWith({ error: 'Falha ao comunicar com o serviço de IA.' });
   });
 
   test('retorna 400 quando a mensagem esta ausente ou vazia', async () => {
@@ -171,4 +173,18 @@ describe('api/chat handler', () => {
     expect(res.status).toHaveBeenCalledWith(504);
     expect(res.json).toHaveBeenCalledWith({ error: 'Tempo limite excedido ao consultar a API.' });
   });
+  test('rejeita mensagens acima de 8000 caracteres sem chamar a API externa', async () => {
+    process.env.GEMINI_API_KEY = 'chave-de-teste';
+    const req = { method: 'POST', body: { message: 'a'.repeat(8001) } };
+    const res = mockRes();
+
+    global.fetch = jest.fn();
+
+    await handler(req, res);
+
+    expect(global.fetch).not.toHaveBeenCalled();
+    expect(res.status).toHaveBeenCalledWith(413);
+    expect(res.json).toHaveBeenCalledWith({ error: 'Mensagem excede o limite de 8000 caracteres.' });
+  });
+
 });
