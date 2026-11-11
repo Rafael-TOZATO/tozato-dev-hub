@@ -3,11 +3,12 @@
   "version": "1.0.0",
   "description": "Aplicacao web interativa que centraliza o portfolio profissional, listagem dinamica de repositorios via GitHub API e assistente conversacional integrado.",
   "type": "commonjs",
-  "scripts": {
-    "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js",
-    "start": "node scripts/dev-server.mjs"
+  "engines": {
+    "node": ">=20"
   },
-  "devDependencies": {
-    "jest": "^29.7.0"
+  "scripts": {
+    "test": "node --test api/chat.test.js",
+    "start": "node scripts/dev-server.mjs",
+    "check": "node --check api/chat.mjs && node --check scripts/dev-server.mjs && node --check api/chat.test.js"
   }
 }
