@@ -52,7 +52,7 @@ test('responde a preflight OPTIONS com 204 e aplica CORS para origem permitida',
 
   await handler(req, res);
 
-  assert.ok(calls.headers.includes(['Access-Control-Allow-Origin', 'https://rafael-tozato.github.io']));
+  assert.ok(calls.headers.some(([name, value]) => name === 'Access-Control-Allow-Origin' && value === 'https://rafael-tozato.github.io'));
   assert.ok(calls.headers.some(([name, value]) => name === 'Vary' && value === 'Origin'));
   assert.equal(last(calls.status), 204);
   assert.equal(calls.end, 1);
