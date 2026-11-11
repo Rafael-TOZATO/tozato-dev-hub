@@ -1,190 +1,217 @@
-let handler;
+const assert = require('node:assert/strict');
+const { afterEach, before, test } = require('node:test');
 
-function mockRes() {
-  const res = {};
-  res.status = jest.fn().mockReturnValue(res);
-  res.json = jest.fn().mockReturnValue(res);
-  res.setHeader = jest.fn().mockReturnValue(res);
-  res.end = jest.fn().mockReturnValue(res);
-  return res;
+let handler;
+const originalApiKey = process.env.GEMINI_API_KEY;
+const originalFetch = global.fetch;
+
+function mockResponse() {
+  const calls = { status: [], json: [], headers: [], end: 0 };
+  const res = {
+    status(code) {
+      calls.status.push(code);
+      return res;
+    },
+    json(body) {
+      calls.json.push(body);
+      return res;
+    },
+    setHeader(name, value) {
+      calls.headers.push([name, value]);
+      return res;
+    },
+    end() {
+      calls.end += 1;
+      return res;
+    }
+  };
+
+  return { res, calls };
 }
 
-describe('api/chat handler', () => {
-  const originalApiKey = process.env.GEMINI_API_KEY;
-  const originalFetch = global.fetch;
+function last(items) {
+  return items[items.length - 1];
+}
 
-  beforeAll(async () => {
-    ({ default: handler } = await import('./chat.mjs'));
-  });
+before(async () => {
+  ({ default: handler } = await import('./chat.mjs'));
+});
 
-  afterEach(() => {
-    if (originalApiKey === undefined) {
-      delete process.env.GEMINI_API_KEY;
-    } else {
-      process.env.GEMINI_API_KEY = originalApiKey;
-    }
-    global.fetch = originalFetch;
-    jest.restoreAllMocks();
-  });
-
-  test('responde a preflight OPTIONS com 204 e aplica CORS para origem permitida', async () => {
-    const req = { method: 'OPTIONS', headers: { origin: 'https://rafael-tozato.github.io' } };
-    const res = mockRes();
-
-    await handler(req, res);
-
-    expect(res.setHeader).toHaveBeenCalledWith('Access-Control-Allow-Origin', 'https://rafael-tozato.github.io');
-    expect(res.status).toHaveBeenCalledWith(204);
-    expect(res.end).toHaveBeenCalled();
-  });
-
-  test('nao aplica Access-Control-Allow-Origin para origem nao permitida', async () => {
-    const req = { method: 'OPTIONS', headers: { origin: 'https://origem-desconhecida.com' } };
-    const res = mockRes();
-
-    await handler(req, res);
-
-    expect(res.setHeader).not.toHaveBeenCalledWith('Access-Control-Allow-Origin', 'https://origem-desconhecida.com');
-    expect(res.status).toHaveBeenCalledWith(204);
-  });
-
-  test('rejeita metodos diferentes de POST com 405', async () => {
-    const req = { method: 'GET', body: {} };
-    const res = mockRes();
-
-    await handler(req, res);
-
-    expect(res.status).toHaveBeenCalledWith(405);
-    expect(res.json).toHaveBeenCalledWith({ error: 'Método não permitido' });
-  });
-
-  test('nao quebra quando req.body esta ausente', async () => {
-    process.env.GEMINI_API_KEY = 'chave-de-teste';
-    const req = { method: 'POST', headers: {} };
-    const res = mockRes();
-
-    await handler(req, res);
-
-    expect(res.status).toHaveBeenCalledWith(400);
-    expect(res.json).toHaveBeenCalledWith({ error: 'Mensagem inválida ou vazia.' });
-  });
-
-  test('retorna 500 quando GEMINI_API_KEY nao esta configurada', async () => {
+afterEach(() => {
+  if (originalApiKey === undefined) {
     delete process.env.GEMINI_API_KEY;
-    const req = { method: 'POST', body: { message: 'ola' } };
-    const res = mockRes();
+  } else {
+    process.env.GEMINI_API_KEY = originalApiKey;
+  }
+  global.fetch = originalFetch;
+});
 
-    await handler(req, res);
+test('responde a preflight OPTIONS com 204 e aplica CORS para origem permitida', async () => {
+  const req = { method: 'OPTIONS', headers: { origin: 'https://rafael-tozato.github.io' } };
+  const { res, calls } = mockResponse();
 
-    expect(res.status).toHaveBeenCalledWith(500);
-    expect(res.json).toHaveBeenCalledWith({ error: 'Chave de API não configurada.' });
-  });
+  await handler(req, res);
 
-  test('retorna 200 com a resposta da IA quando a chamada tem sucesso', async () => {
-    process.env.GEMINI_API_KEY = 'chave-de-teste';
-    const req = { method: 'POST', body: { message: 'ola' } };
-    const res = mockRes();
+  assert.ok(calls.headers.includes(['Access-Control-Allow-Origin', 'https://rafael-tozato.github.io']));
+  assert.ok(calls.headers.some(([name, value]) => name === 'Vary' && value === 'Origin'));
+  assert.equal(last(calls.status), 204);
+  assert.equal(calls.end, 1);
+});
 
-    global.fetch = jest.fn().mockResolvedValue({
+test('nao aplica Access-Control-Allow-Origin para origem nao permitida', async () => {
+  const req = { method: 'OPTIONS', headers: { origin: 'https://origem-desconhecida.com' } };
+  const { res, calls } = mockResponse();
+
+  await handler(req, res);
+
+  assert.equal(calls.headers.some(([name]) => name === 'Access-Control-Allow-Origin'), false);
+  assert.equal(last(calls.status), 204);
+});
+
+test('rejeita metodos diferentes de POST com 405', async () => {
+  const { res, calls } = mockResponse();
+
+  await handler({ method: 'GET', body: {} }, res);
+
+  assert.equal(last(calls.status), 405);
+  assert.deepEqual(last(calls.json), { error: 'Método não permitido' });
+});
+
+test('nao quebra quando req.body esta ausente', async () => {
+  process.env.GEMINI_API_KEY = 'chave-de-teste';
+  const { res, calls } = mockResponse();
+
+  await handler({ method: 'POST', headers: {} }, res);
+
+  assert.equal(last(calls.status), 400);
+  assert.deepEqual(last(calls.json), { error: 'Mensagem inválida ou vazia.' });
+});
+
+test('retorna 500 quando GEMINI_API_KEY nao esta configurada', async () => {
+  delete process.env.GEMINI_API_KEY;
+  const { res, calls } = mockResponse();
+
+  await handler({ method: 'POST', body: { message: 'ola' } }, res);
+
+  assert.equal(last(calls.status), 500);
+  assert.deepEqual(last(calls.json), { error: 'Chave de API não configurada.' });
+});
+
+test('retorna 200 e envia a chave Gemini em header, nunca na URL', async () => {
+  process.env.GEMINI_API_KEY = 'chave-de-teste';
+  const { res, calls } = mockResponse();
+  global.fetch = async (url, options) => {
+    assert.equal(url.includes('chave-de-teste'), false);
+    assert.equal(options.headers['x-goog-api-key'], 'chave-de-teste');
+    return {
       ok: true,
       json: async () => ({
         candidates: [{ content: { parts: [{ text: 'Resposta da IA' }] } }]
       })
-    });
+    };
+  };
 
-    await handler(req, res);
+  await handler({ method: 'POST', body: { message: 'ola' } }, res);
 
-    expect(global.fetch).toHaveBeenCalledTimes(1);
-    expect(global.fetch.mock.calls[0][0]).not.toContain('chave-de-teste');
-    expect(global.fetch.mock.calls[0][1].headers['x-goog-api-key']).toBe('chave-de-teste');
-    expect(res.status).toHaveBeenCalledWith(200);
-    expect(res.json).toHaveBeenCalledWith({ reply: 'Resposta da IA' });
+  assert.equal(last(calls.status), 200);
+  assert.deepEqual(last(calls.json), { reply: 'Resposta da IA' });
+});
+
+test('nao expoe detalhes internos quando a API externa retorna falha', async () => {
+  process.env.GEMINI_API_KEY = 'chave-de-teste';
+  const { res, calls } = mockResponse();
+  global.fetch = async () => ({
+    ok: false,
+    status: 400,
+    json: async () => ({ error: { message: 'detalhe interno sensivel' } })
   });
 
-  test('retorna 500 com a mensagem de erro quando a API responde com falha', async () => {
-    process.env.GEMINI_API_KEY = 'chave-de-teste';
-    const req = { method: 'POST', body: { message: 'ola' } };
-    const res = mockRes();
+  await handler({ method: 'POST', body: { message: 'ola' } }, res);
 
-    global.fetch = jest.fn().mockResolvedValue({
-      ok: false,
-      json: async () => ({ error: { message: 'Limite de requisicoes excedido' } })
-    });
+  assert.equal(last(calls.status), 502);
+  assert.deepEqual(last(calls.json), {
+    error: 'Não foi possível concluir a consulta à API de IA.'
+  });
+  assert.equal(JSON.stringify(calls.json).includes('detalhe interno sensivel'), false);
+});
 
-    await handler(req, res);
+test('retorna 503 quando a API externa limita requisicoes', async () => {
+  process.env.GEMINI_API_KEY = 'chave-de-teste';
+  const { res, calls } = mockResponse();
+  global.fetch = async () => ({ ok: false, status: 429, json: async () => ({}) });
 
-    expect(res.status).toHaveBeenCalledWith(502);
-    expect(res.json).toHaveBeenCalledWith({ error: 'Não foi possível concluir a consulta à API de IA.' });
+  await handler({ method: 'POST', body: { message: 'ola' } }, res);
+
+  assert.equal(last(calls.status), 503);
+});
+
+test('retorna 502 quando o fetch falha por erro de rede', async () => {
+  process.env.GEMINI_API_KEY = 'chave-de-teste';
+  const { res, calls } = mockResponse();
+  global.fetch = async () => {
+    throw new Error('Falha de conexao');
+  };
+
+  await handler({ method: 'POST', body: { message: 'ola' } }, res);
+
+  assert.equal(last(calls.status), 502);
+  assert.deepEqual(last(calls.json), { error: 'Falha ao comunicar com o serviço de IA.' });
+});
+
+test('retorna 400 quando a mensagem esta ausente ou vazia', async () => {
+  process.env.GEMINI_API_KEY = 'chave-de-teste';
+  const { res, calls } = mockResponse();
+
+  await handler({ method: 'POST', body: { message: '  ' } }, res);
+
+  assert.equal(last(calls.status), 400);
+  assert.deepEqual(last(calls.json), { error: 'Mensagem inválida ou vazia.' });
+});
+
+test('retorna 413 e nao chama a API para mensagens acima de 8000 caracteres', async () => {
+  process.env.GEMINI_API_KEY = 'chave-de-teste';
+  const { res, calls } = mockResponse();
+  global.fetch = async () => {
+    throw new Error('A API externa nao deveria ser chamada');
+  };
+
+  await handler({ method: 'POST', body: { message: 'a'.repeat(8001) } }, res);
+
+  assert.equal(last(calls.status), 413);
+  assert.deepEqual(last(calls.json), {
+    error: 'Mensagem excede o limite de 8000 caracteres.'
+  });
+});
+
+test('retorna 500 quando a resposta da IA vem sem candidates', async () => {
+  process.env.GEMINI_API_KEY = 'chave-de-teste';
+  const { res, calls } = mockResponse();
+  global.fetch = async () => ({
+    ok: true,
+    json: async () => ({ promptFeedback: { blockReason: 'SAFETY' } })
   });
 
-  test('retorna 500 quando o fetch falha por erro de rede', async () => {
-    process.env.GEMINI_API_KEY = 'chave-de-teste';
-    const req = { method: 'POST', body: { message: 'ola' } };
-    const res = mockRes();
+  await handler({ method: 'POST', body: { message: 'ola' } }, res);
 
-    global.fetch = jest.fn().mockRejectedValue(new Error('Falha de conexao'));
-
-    await handler(req, res);
-
-    expect(res.status).toHaveBeenCalledWith(502);
-    expect(res.json).toHaveBeenCalledWith({ error: 'Falha ao comunicar com o serviço de IA.' });
+  assert.equal(last(calls.status), 500);
+  assert.deepEqual(last(calls.json), {
+    error: 'Resposta da IA vazia ou bloqueada pelo filtro de segurança.'
   });
+});
 
-  test('retorna 400 quando a mensagem esta ausente ou vazia', async () => {
-    process.env.GEMINI_API_KEY = 'chave-de-teste';
-    const req = { method: 'POST', body: { message: '' } };
-    const res = mockRes();
+test('retorna 504 quando a chamada excede o tempo limite', async () => {
+  process.env.GEMINI_API_KEY = 'chave-de-teste';
+  const { res, calls } = mockResponse();
+  global.fetch = async () => {
+    const error = new Error('The operation was aborted');
+    error.name = 'AbortError';
+    throw error;
+  };
 
-    await handler(req, res);
+  await handler({ method: 'POST', body: { message: 'ola' } }, res);
 
-    expect(res.status).toHaveBeenCalledWith(400);
-    expect(res.json).toHaveBeenCalledWith({ error: 'Mensagem inválida ou vazia.' });
+  assert.equal(last(calls.status), 504);
+  assert.deepEqual(last(calls.json), {
+    error: 'Tempo limite excedido ao consultar a API.'
   });
-
-  test('retorna 500 quando a resposta da IA vem sem candidates (bloqueio de seguranca)', async () => {
-    process.env.GEMINI_API_KEY = 'chave-de-teste';
-    const req = { method: 'POST', body: { message: 'ola' } };
-    const res = mockRes();
-
-    global.fetch = jest.fn().mockResolvedValue({
-      ok: true,
-      json: async () => ({ promptFeedback: { blockReason: 'SAFETY' } })
-    });
-
-    await handler(req, res);
-
-    expect(res.status).toHaveBeenCalledWith(500);
-    expect(res.json).toHaveBeenCalledWith({ error: 'Resposta da IA vazia ou bloqueada pelo filtro de segurança.' });
-  });
-
-  test('retorna 504 quando a chamada excede o tempo limite', async () => {
-    process.env.GEMINI_API_KEY = 'chave-de-teste';
-    const req = { method: 'POST', body: { message: 'ola' } };
-    const res = mockRes();
-
-    global.fetch = jest.fn().mockImplementation(() => {
-      const err = new Error('The operation was aborted');
-      err.name = 'AbortError';
-      return Promise.reject(err);
-    });
-
-    await handler(req, res);
-
-    expect(res.status).toHaveBeenCalledWith(504);
-    expect(res.json).toHaveBeenCalledWith({ error: 'Tempo limite excedido ao consultar a API.' });
-  });
-  test('rejeita mensagens acima de 8000 caracteres sem chamar a API externa', async () => {
-    process.env.GEMINI_API_KEY = 'chave-de-teste';
-    const req = { method: 'POST', body: { message: 'a'.repeat(8001) } };
-    const res = mockRes();
-
-    global.fetch = jest.fn();
-
-    await handler(req, res);
-
-    expect(global.fetch).not.toHaveBeenCalled();
-    expect(res.status).toHaveBeenCalledWith(413);
-    expect(res.json).toHaveBeenCalledWith({ error: 'Mensagem excede o limite de 8000 caracteres.' });
-  });
-
 });
