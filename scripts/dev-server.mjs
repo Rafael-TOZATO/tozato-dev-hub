@@ -7,7 +7,7 @@ import chatHandler from '../api/chat.mjs';
 
 const projectRoot = fileURLToPath(new URL('../', import.meta.url));
 const port = Number.parseInt(process.env.PORT || '3000', 10);
-const host = process.env.HOST || '0.0.0.0';
+const host = process.env.HOST || '127.0.0.1';
 const maxBodyBytes = 1024 * 1024;
 
 const staticFiles = new Map([
@@ -19,7 +19,12 @@ const staticFiles = new Map([
 ]);
 
 function sendJson(res, statusCode, body) {
-  res.writeHead(statusCode, { 'Content-Type': 'application/json; charset=utf-8' });
+  res.writeHead(statusCode, {
+    'Content-Type': 'application/json; charset=utf-8',
+    'X-Content-Type-Options': 'nosniff',
+    'X-Frame-Options': 'DENY',
+    'Referrer-Policy': 'strict-origin-when-cross-origin'
+  });
   res.end(JSON.stringify(body));
 }
 
@@ -116,7 +121,10 @@ const server = createServer(async (req, res) => {
     res.writeHead(200, {
       'Content-Type': asset.contentType,
       'Content-Length': body.length,
-      'Cache-Control': 'no-store'
+      'Cache-Control': 'no-store',
+      'X-Content-Type-Options': 'nosniff',
+      'X-Frame-Options': 'DENY',
+      'Referrer-Policy': 'strict-origin-when-cross-origin'
     });
     res.end(req.method === 'HEAD' ? undefined : body);
   } catch (error) {
