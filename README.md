@@ -90,3 +90,24 @@ Para mais detalhes sobre os padrões de commits e arquitetura, consulte o nosso 
 Encontrou algum erro ou tem sugestões de melhoria? Utilize nossos templates oficiais de governança:
 
 * 🐛 [Relatar um Bug](.github/ISSUE_TEMPLATE/bug_report.md)
+
+
+---
+
+## Governança 4.0 — Segurança e Qualidade
+
+O projeto aplica controles de governança de software para assegurar rastreabilidade, integridade da cadeia de suprimentos e redução de riscos operacionais.
+
+- **Quality Gate:** instalação reproduzível, verificação de sintaxe, testes automatizados e auditoria de dependências.
+- **SAST:** análise estática de JavaScript e TypeScript com GitHub CodeQL e consultas de segurança estendida.
+- **Segurança de segredos:** varredura do histórico Git com Gitleaks Action v3.0.0.
+- **Proteção de credenciais:** chave de API mantida em variável de ambiente e permissões mínimas nos workflows.
+- **Rastreabilidade:** resultados e histórico das execuções são mantidos no GitHub Actions.
+
+<div align="center">
+
+[![Quality Gate](https://img.shields.io/github/actions/workflow/status/Rafael-TOZATO/tozato-dev-hub/quality-gate.yml?branch=main&label=Quality%20Gate)](https://github.com/Rafael-TOZATO/tozato-dev-hub/actions/workflows/quality-gate.yml)
+[![Gitleaks](https://img.shields.io/github/actions/workflow/status/Rafael-TOZATO/tozato-dev-hub/gitleaks.yml?branch=main&label=Gitleaks)](https://github.com/Rafael-TOZATO/tozato-dev-hub/actions/workflows/gitleaks.yml)
+[![CodeQL](https://img.shields.io/github/actions/workflow/status/Rafael-TOZATO/tozato-dev-hub/codeql.yml?branch=main&label=CodeQL)](https://github.com/Rafael-TOZATO/tozato-dev-hub/actions/workflows/codeql.yml)
+
+</div>
