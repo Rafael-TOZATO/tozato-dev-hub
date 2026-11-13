@@ -12,21 +12,13 @@
   <a href="https://github.com/Rafael-TOZATO/tozato-dev-hub/blob/main/LICENSE"><img src="https://img.shields.io/github/license/Rafael-TOZATO/tozato-dev-hub?style=for-the-badge" alt="Licença"></a>
 </p>
 
+---
+
 ## Sobre o Projeto
 
 O **TozatoCode-AI Hub** é uma aplicação web interativa que reúne o portfólio profissional, apresenta dados e repositórios públicos do GitHub e oferece um assistente conversacional integrado à API do Google Gemini. O projeto combina engenharia de software e inteligência artificial sob a identidade da **TozatoCode-AI**.
 
-## Qualidade e Governança
-
-- **Testes automatizados:** 13 cenários executados pelo test runner nativo do Node.js, sem dependência de frameworks externos.
-- **Verificação estática:** validação de sintaxe dos módulos da API, servidor local e testes por meio de `node --check`.
-- **Dependências:** remoção do Jest e de sua árvore transitiva de pacotes. O projeto não mantém dependências npm de terceiros; o lockfile foi simplificado e permanece versionado.
-- **Quality Gate:** workflow executado em push e pull request para a branch `main`, com instalação reproduzível, verificação de sintaxe, testes e auditoria npm.
-- **SAST:** workflow CodeQL com consultas `security-extended`, acionado em push, pull request e execução semanal.
-- **Proteção da API:** chave Gemini enviada em cabeçalho, limite de 8.000 caracteres, respostas de erro sem detalhes internos e cabeçalhos de segurança.
-- **Servidor local:** vinculação padrão a `127.0.0.1` e cabeçalhos contra MIME sniffing, framing e exposição desnecessária de referenciador.
-
-Os badges de Quality Gate e CodeQL refletem o estado das respectivas execuções no GitHub Actions. A configuração dos workflows foi adicionada; o status operacional dependerá da primeira execução concluída.
+---
 
 ## Como Executar o Projeto Localmente
 
@@ -54,6 +46,8 @@ Requer Node.js 20 ou superior.
 
 ---
 
+---
+
 ## 🤝 Contribuição e Governança
 
 Contribuições e relatos de bugs são bem-vindos para o aprimoramento contínuo da plataforma.
@@ -66,15 +60,62 @@ Para mais detalhes sobre os padrões de commits e arquitetura, consulte o nosso 
 
 ---
 
+---
+
+## Contribuição e Suporte
+
+Encontrou algum erro ou tem sugestões de melhoria? Utilize nossos templates oficiais de governança:
+
+* 🐛 [Relatar um Bug](.github/ISSUE_TEMPLATE/bug_report.md)
+
+---
+
+---
+
+## Governança 4.0 — Segurança e Qualidade
+
+Este repositório adota controles automatizados de Governança 4.0 para assegurar integridade dos artefatos e do código, rastreabilidade das alterações, gestão de dependências e prevenção de exposição de credenciais. Os controles são aplicados conforme a natureza técnica e os componentes efetivamente mantidos no projeto.
+
+- **Quality Gate:** validação automatizada do escopo do repositório, incluindo verificações de integridade, testes, análise estática, tipagem ou build quando aplicáveis.
+- **Segurança de segredos:** varredura do histórico Git com Gitleaks Action v3.0.0.
+- **SAST:** análise com GitHub CodeQL para linguagens suportadas e presentes no código-fonte.
+- **Dependências:** monitoramento automatizado e revisão de vulnerabilidades conforme os manifests e lockfiles existentes.
+- **Menor privilégio:** permissões mínimas nos workflows e checkout sem persistência desnecessária de credenciais.
+- **Rastreabilidade:** commits, execuções e resultados dos controles permanecem registrados no GitHub Actions.
+
+### Controles específicos do repositório
+
+- **Testes automatizados:** 13 cenários executados pelo test runner nativo do Node.js, sem dependência de frameworks externos.
+- **Verificação estática:** validação de sintaxe dos módulos da API, servidor local e testes por meio de `node --check`.
+- **Dependências:** remoção do Jest e de sua árvore transitiva de pacotes. O projeto não mantém dependências npm de terceiros; o lockfile foi simplificado e permanece versionado.
+- **Quality Gate:** workflow executado em push e pull request para a branch `main`, com instalação reproduzível, verificação de sintaxe, testes e auditoria npm.
+- **SAST:** workflow CodeQL com consultas `security-extended`, acionado em push, pull request e execução semanal.
+- **Proteção da API:** chave Gemini enviada em cabeçalho, limite de 8.000 caracteres, respostas de erro sem detalhes internos e cabeçalhos de segurança.
+- **Servidor local:** vinculação padrão a `127.0.0.1` e cabeçalhos contra MIME sniffing, framing e exposição desnecessária de referenciador.
+O projeto aplica controles de governança de software para assegurar rastreabilidade, integridade da cadeia de suprimentos e redução de riscos operacionais.
+- **Quality Gate:** instalação reproduzível, verificação de sintaxe, testes automatizados e auditoria de dependências.
+- **SAST:** análise estática de JavaScript e TypeScript com GitHub CodeQL e consultas de segurança estendida.
+- **Segurança de segredos:** varredura do histórico Git com Gitleaks Action v3.0.0.
+- **Proteção de credenciais:** chave de API mantida em variável de ambiente e permissões mínimas nos workflows.
+- **Rastreabilidade:** resultados e histórico das execuções são mantidos no GitHub Actions.
+
+---
+
 ## 💻 PROJETOS E PORTFÓLIOS
 - **App Ecosystem:** [tozato-ai-core.vercel.app](https://tozato-ai-core.vercel.app)
 - **H-Folio:** [h-folio-l0.vercel.app](https://h-folio-l0.vercel.app)
 
+---
+
 ## 🐙 CÓDIGO E REPOSITÓRIOS
 - **GitHub:** [github.com/Rafael-TOZATO](https://github.com/Rafael-TOZATO)
 
+---
+
 ## ✍️ ARTIGOS E PUBLICAÇÕES
 - **Medium:** [medium.com/@ornelas.tozato](https://medium.com/@ornelas.tozato)
+
+---
 
 ## 📬 CONTATOS
 - **E-mail:** ornelas.tozato@gmail.com
@@ -84,30 +125,3 @@ Para mais detalhes sobre os padrões de commits e arquitetura, consulte o nosso 
 - **Dev Hub:** [tozato-ai-core.vercel.app](https://tozato-ai-core.vercel.app)
 - **H-Folio:** [h-folio-l0.vercel.app](https://h-folio-l0.vercel.app)
 - **Microsoft Learn:** [rafaelornelastozato-2209](https://learn.microsoft.com/pt-br/users/rafaelornelastozato-2209)
-
-## Contribuição e Suporte
-
-Encontrou algum erro ou tem sugestões de melhoria? Utilize nossos templates oficiais de governança:
-
-* 🐛 [Relatar um Bug](.github/ISSUE_TEMPLATE/bug_report.md)
-
-
----
-
-## Governança 4.0 — Segurança e Qualidade
-
-O projeto aplica controles de governança de software para assegurar rastreabilidade, integridade da cadeia de suprimentos e redução de riscos operacionais.
-
-- **Quality Gate:** instalação reproduzível, verificação de sintaxe, testes automatizados e auditoria de dependências.
-- **SAST:** análise estática de JavaScript e TypeScript com GitHub CodeQL e consultas de segurança estendida.
-- **Segurança de segredos:** varredura do histórico Git com Gitleaks Action v3.0.0.
-- **Proteção de credenciais:** chave de API mantida em variável de ambiente e permissões mínimas nos workflows.
-- **Rastreabilidade:** resultados e histórico das execuções são mantidos no GitHub Actions.
-
-<div align="center">
-
-[![Quality Gate](https://img.shields.io/github/actions/workflow/status/Rafael-TOZATO/tozato-dev-hub/quality-gate.yml?branch=main&label=Quality%20Gate)](https://github.com/Rafael-TOZATO/tozato-dev-hub/actions/workflows/quality-gate.yml)
-[![Gitleaks](https://img.shields.io/github/actions/workflow/status/Rafael-TOZATO/tozato-dev-hub/gitleaks.yml?branch=main&label=Gitleaks)](https://github.com/Rafael-TOZATO/tozato-dev-hub/actions/workflows/gitleaks.yml)
-[![CodeQL](https://img.shields.io/github/actions/workflow/status/Rafael-TOZATO/tozato-dev-hub/codeql.yml?branch=main&label=CodeQL)](https://github.com/Rafael-TOZATO/tozato-dev-hub/actions/workflows/codeql.yml)
-
-</div>
