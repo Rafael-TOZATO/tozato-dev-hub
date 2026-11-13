@@ -113,6 +113,14 @@ O projeto aplica controles de governança de software para assegurar rastreabili
 
 ---
 
+<div align="center">
+
+[![Quality Gate](https://img.shields.io/github/actions/workflow/status/Rafael-TOZATO/tozato-dev-hub/quality-gate.yml?branch=main&label=Quality%20Gate)](https://github.com/Rafael-TOZATO/tozato-dev-hub/actions/workflows/quality-gate.yml)
+[![Gitleaks](https://img.shields.io/github/actions/workflow/status/Rafael-TOZATO/tozato-dev-hub/gitleaks.yml?branch=main&label=Gitleaks)](https://github.com/Rafael-TOZATO/tozato-dev-hub/actions/workflows/gitleaks.yml)
+[![CodeQL](https://img.shields.io/github/actions/workflow/status/Rafael-TOZATO/tozato-dev-hub/codeql.yml?branch=main&label=CodeQL)](https://github.com/Rafael-TOZATO/tozato-dev-hub/actions/workflows/codeql.yml)
+
+</div>
+
 ## 📬 CONTATOS E PERFIS
 
 - **App Ecosystem:** [tozato-ai-core.vercel.app](https://tozato-ai-core.vercel.app)
