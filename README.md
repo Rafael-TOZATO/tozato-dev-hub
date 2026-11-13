@@ -14,9 +14,13 @@
 
 ---
 
+---
+
 ## Sobre o Projeto
 
 O **TozatoCode-AI Hub** é uma aplicação web interativa que reúne o portfólio profissional, apresenta dados e repositórios públicos do GitHub e oferece um assistente conversacional integrado à API do Google Gemini. O projeto combina engenharia de software e inteligência artificial sob a identidade da **TozatoCode-AI**.
+
+---
 
 ---
 
@@ -48,6 +52,8 @@ Requer Node.js 20 ou superior.
 
 ---
 
+---
+
 ## 🤝 Contribuição e Governança
 
 Contribuições e relatos de bugs são bem-vindos para o aprimoramento contínuo da plataforma.
@@ -62,11 +68,15 @@ Para mais detalhes sobre os padrões de commits e arquitetura, consulte o nosso 
 
 ---
 
+---
+
 ## Contribuição e Suporte
 
 Encontrou algum erro ou tem sugestões de melhoria? Utilize nossos templates oficiais de governança:
 
 * 🐛 [Relatar um Bug](.github/ISSUE_TEMPLATE/bug_report.md)
+
+---
 
 ---
 
@@ -101,27 +111,21 @@ O projeto aplica controles de governança de software para assegurar rastreabili
 
 ---
 
-## 💻 PROJETOS E PORTFÓLIOS
+---
+
+## 📬 CONTATOS E PERFIS
+
 - **App Ecosystem:** [tozato-ai-core.vercel.app](https://tozato-ai-core.vercel.app)
 - **H-Folio:** [h-folio-l0.vercel.app](https://h-folio-l0.vercel.app)
 
 ---
-
-## 🐙 CÓDIGO E REPOSITÓRIOS
 - **GitHub:** [github.com/Rafael-TOZATO](https://github.com/Rafael-TOZATO)
 
----
-
-## ✍️ ARTIGOS E PUBLICAÇÕES
 - **Medium:** [medium.com/@ornelas.tozato](https://medium.com/@ornelas.tozato)
 
----
-
-## 📬 CONTATOS
 - **E-mail:** ornelas.tozato@gmail.com
 - **LinkedIn:** [rafaeltozato81](https://www.linkedin.com/in/rafaeltozato81)
 - **GitHub:** [Rafael-TOZATO](https://github.com/Rafael-TOZATO)
 - **Medium:** [@ornelas.tozato](https://medium.com/@ornelas.tozato)
 - **Dev Hub:** [tozato-ai-core.vercel.app](https://tozato-ai-core.vercel.app)
-- **H-Folio:** [h-folio-l0.vercel.app](https://h-folio-l0.vercel.app)
 - **Microsoft Learn:** [rafaelornelastozato-2209](https://learn.microsoft.com/pt-br/users/rafaelornelastozato-2209)
